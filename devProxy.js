@@ -1,0 +1,22 @@
+module.exports = {
+  test: {
+    '^/api/account/**': {
+      target: 'http://test.cash.pay.sogou/',
+      hostRewrite: 'http://test.cash.pay.sogou/',
+      changeOrigin: true,
+      secure: false,
+    },
+    '^/api/accounting/**': {
+      target: 'http://localhost:3001/',
+      hostRewrite: 'http://localhost:3001/',
+      changeOrigin: true,
+      secure: false,
+    },
+  },
+//   // prod: {
+//   //   '/api/v1/exceptionData/**': {
+//   //     target: 'http://10.129.204.157',
+//   //     secure: false,
+//   //   },
+//   // }
+};
