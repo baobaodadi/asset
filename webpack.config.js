@@ -136,7 +136,7 @@ module.exports = function (env) {
     config = merge(config, {
       devtool: '#eval-source-map',
       devServer: {
-        port: 8888,
+        port: 7777,
         https:false,
         historyApiFallback: true,
         disableHostCheck: true,

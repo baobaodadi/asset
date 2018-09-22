@@ -1,25 +1,13 @@
 import {spawn} from 'redux-saga/effects';
-import detail from './detail';
-import month from './month';
+import asset from './asset';
 import apps from './apps';
-import merchants from './merchants';
-import bill from './bill';
-import bank from './bank';
-import ddetail from "./ddetail";
-import dsettle from "./dsettle";
-import serial from "./serial";
+import mail from './mail';
 
 
 export default function* () {
   yield [
-    spawn(detail),
-    spawn(month),
     spawn(apps),
-    spawn(merchants),
-    spawn(bill),
-    spawn(bank),
-    spawn(ddetail),
-    spawn(dsettle),
-    spawn(serial),
+    spawn(mail),
+    spawn(asset),
   ];
 }

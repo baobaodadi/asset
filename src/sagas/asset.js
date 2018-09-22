@@ -5,19 +5,18 @@ import {takeLatest, put} from 'redux-saga/effects';
 import service from '../utils/service';
 import API from '../config/api';
 import * as actionTypes from '../config/actionTypes';
-import {ENTITY_SERIAL} from '../config/constants';
+import {ENTITY_ASSET} from '../config/constants';
 
 
-function* fetchSerial(action) {
+function* fetchAsset(action) {
   const {payload} = action;
   try {
 
-    const data=yield service.get(API[ENTITY_SERIAL],{
-      serialNumber:payload.serialNo
-    });
+
+    const data=yield service.get(API[ENTITY_ASSET]);
 
     yield put({
-      type: actionTypes.UPDATE_SERIAL,
+      type: actionTypes.UPDATE_ASSET,
       payload:  {
         data: data,
       },
@@ -31,6 +30,6 @@ function* fetchSerial(action) {
 
 export default function* () {
   yield [
-    takeLatest(actionTypes.FETCH_SERIAL, fetchSerial),
+    takeLatest(actionTypes.FETCH_ASSET, fetchAsset),
   ];
 }

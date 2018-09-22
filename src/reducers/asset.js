@@ -3,11 +3,11 @@ import * as actionTypes from '../config/actionTypes';
 
 
 const inintialState = {
-  data:[],
+  data: null
 };
 
 export default handleActions({
-  [actionTypes.UPDATE_MERCHANTS]: (state, {payload}) => ({
+  [actionTypes.UPDATE_ASSET]: (state, {payload}) => ({
     ...state,
     ...payload
   }),

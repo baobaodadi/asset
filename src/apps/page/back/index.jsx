@@ -10,12 +10,8 @@ import './index.less';
 import {Table, Input, Button, Icon, Modal, Spin, DatePicker, Select, Tabs, Form,TreeSelect} from 'antd';
 
 const {MonthPicker, RangePicker, WeekPicker} = DatePicker;
-import {typeState} from '../../../config/status';
-import locale from 'antd/lib/date-picker/locale/zh_CN';
 import moment from 'moment'
 import 'moment/locale/zh-cn'
-import {channel} from '../../../config/status';
-// const nzhhk = require("nzh/hk");
 const TabPane = Tabs.TabPane;
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
@@ -49,7 +45,7 @@ const dataSource= [{
   action10: 'Nek',
 }];
 
-class App extends Component {
+class Back extends Component {
 
   columns() {
     let array = [
@@ -236,7 +232,7 @@ class App extends Component {
 
 
   componentDidMount() {
-    this.props.fetchApps();
+    // this.props.fetchApps();
   }
 
   render() {
@@ -245,7 +241,7 @@ class App extends Component {
 
     return (
 
-      <div className="month">
+      <div className="back">
         <Modal
           centered
           width='900px'
@@ -469,25 +465,20 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return ({
-    dataSource: state.month.data,
     appList: state.apps.data,
   })
 };
 
 
 const mapDispatchToProps = dispatch => ({
-  fetchMonth: (payload) => dispatch({
-    type: actionTypes.FETCH_MONTH,
-    payload
-  }),
-  fetchApps: (payload) => dispatch({
-    type: actionTypes.FETCH_APPS,
-    payload
-  }),
+  // fetchApps: (payload) => dispatch({
+  //   type: actionTypes.FETCH_APPS,
+  //   payload
+  // }),
 });
 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form.create()(App)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form.create()(Back)));
 
 
 

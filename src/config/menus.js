@@ -1,19 +1,19 @@
 const menus = [
-  {
-    'key': 'month',
-    'type': "tags",
-    'content': '结算',
-  },
-  {
-    'key': 'detail',
-    'type': "tags",
-    'content': '明细',
-  },
-  {
-    'key': 'bill',
-    'type': "tags",
-    'content': '银行对账单',
-  },
+    {
+        'key': 'asset',
+        'type': "tags",
+        'content': '资产',
+    },
+    {
+        'key': 'mail',
+        'type': "tags",
+        'content': '邮箱',
+    },
+    {
+        'key': 'back',
+        'type': "tags",
+        'content': '后台',
+    },
 ];
 
 export default menus

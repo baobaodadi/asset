@@ -3,9 +3,9 @@
  */
 
 import React, {Component} from 'react';
-import Detail from './detail/index.jsx';
-import Month from './month/index.jsx';
-import Bill from './bill/index.jsx';
+import Asset from './asset/index.jsx';
+import Back from './back/index.jsx';
+import Mail from './mail/index.jsx';
 
 import {
   Route,
@@ -18,10 +18,10 @@ class Routes extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path="/detail" component={Detail}/>
-        <Route exact path="/month" component={Month}/>
-        <Route exact path="/bill" component={Bill}/>
-        <Redirect from="/" to="/month"/>
+        <Route exact path="/asset" component={Asset}/>
+        <Route exact path="/mail" component={Mail}/>
+        <Route exact path="/back" component={Back}/>
+        <Redirect from="/" to="/asset"/>
       </Switch>
     );
   }

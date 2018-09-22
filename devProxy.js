@@ -12,6 +12,12 @@ module.exports = {
       changeOrigin: true,
       secure: false,
     },
+      '^/pub/**': {
+          target: 'http://test.oa.sogou-inc.com/',
+          hostRewrite: 'http://test.oa.sogou-inc.com/',
+          changeOrigin: true,
+          secure: false,
+      },
   },
 //   // prod: {
 //   //   '/api/v1/exceptionData/**': {

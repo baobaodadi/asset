@@ -3,12 +3,11 @@ import * as actionTypes from '../config/actionTypes';
 
 
 const inintialState = {
-  isFetching:false,
-  data: [],
+  data: null
 };
 
 export default handleActions({
-  [actionTypes.UPDATE_BILL]: (state, {payload}) => ({
+  [actionTypes.UPDATE_MAIL]: (state, {payload}) => ({
     ...state,
     ...payload
   }),

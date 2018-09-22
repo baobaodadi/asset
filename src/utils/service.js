@@ -12,21 +12,16 @@ function handleResponse(promise, url, method) {
         return res.json();
       }
     })
-    .then(({ code, data, message, models }) => {
-      if (+code === 0) {
+    .then(({ status, data, message, models }) => {
+      if (+status === 0) {
         if (data != null) {
           return data;
         }
 
         return models;
-      }else if(code == 2018) {
-        window.location.href=data.ssourl;
-      }
-
-      else if (code) {
-        console.log('network error', { code, message, url, method });
-
-        throw Object({ code, message, url, method });
+      }else {
+        console.log('network error', { status, message, url, method });
+        throw Object({ status, message, url, method });
       }
     });
 }

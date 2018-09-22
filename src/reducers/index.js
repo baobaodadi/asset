@@ -1,24 +1,13 @@
 import {combineReducers} from 'redux';
-import globle from './globle';
-import detail from './detail';
-import month from './month';
+import asset from './asset';
 import apps from './apps';
-import merchants from './merchants';
-import bill from './bill';
-import bank from './bank';
-import ddetail from './ddetail';
-import dsettle from './dsettle';
-import serial from './serial';
+import globle from './globle';
+import mail from './mail';
+
 
 export default combineReducers({
-  globle,
-  detail,
-  month,
+  asset,
   apps,
-  merchants,
-  bill,
-  bank,
-  ddetail,
-  dsettle,
-  serial,
+  mail,
+  globle,
 });

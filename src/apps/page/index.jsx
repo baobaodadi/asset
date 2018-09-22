@@ -53,30 +53,30 @@ class Main extends Component {
     return (
       <div className="main-wrapper">
         <Row>
-          {/*{isMobile ? (*/}
-            {/*<DrawerMenu*/}
-              {/*open={!this.props.collapsed}*/}
-              {/*onMaskClick={() => {*/}
-                {/*this.onCollapse(true);*/}
-              {/*}}*/}
-              {/*onIconClick={() => {*/}
-                {/*this.onCollapse(!this.props.collapsed);*/}
-              {/*}}*/}
-              {/*width="200px"*/}
-            {/*>*/}
-              {/*<SiderMenu*/}
-                {/*location={history.location}*/}
-                {/*onCollapse={this.onCollapse}*/}
-              {/*/>*/}
-            {/*</DrawerMenu>) : (*/}
-            {/*<Col span={3} className="main-menu">*/}
-              {/*<SiderMenu*/}
-                {/*location={history.location}*/}
-                {/*onCollapse={this.onCollapse}*/}
-              {/*/>*/}
-            {/*</Col>*/}
-          {/*)*/}
-          {/*}*/}
+          {isMobile ? (
+            <DrawerMenu
+              open={!this.props.collapsed}
+              onMaskClick={() => {
+                this.onCollapse(true);
+              }}
+              onIconClick={() => {
+                this.onCollapse(!this.props.collapsed);
+              }}
+              width="200px"
+            >
+              <SiderMenu
+                location={history.location}
+                onCollapse={this.onCollapse}
+              />
+            </DrawerMenu>) : (
+            <Col span={3} className="main-menu">
+              <SiderMenu
+                location={history.location}
+                onCollapse={this.onCollapse}
+              />
+            </Col>
+          )
+          }
           <Col span={21} className="main-container">
             <Routes />
           </Col>

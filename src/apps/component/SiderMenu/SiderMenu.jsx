@@ -45,7 +45,7 @@ class SiderMenu extends Component {
           inlineIndent="40"
           className="aside-container menu-site"
           mode="inline"
-          defaultSelectedKeys={['/month']}
+          defaultSelectedKeys={['/asset']}
           selectedKeys={[location.pathname.slice(1,location.pathname.length)]}
         >
           {this.getNavMenuItems(menus)}
