@@ -28,11 +28,10 @@ class Asset extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // if (nextProps.asset !== this.props.asset)
-        //     this.setState({
-        //         asset: nextProps.asset
-        //     });
-
+        if (nextProps.asset !== this.props.asset)
+            this.setState({
+                asset: nextProps.asset
+            });
     }
 
     handleTab(value) {

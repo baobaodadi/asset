@@ -23,11 +23,11 @@ import {
     Form,
     TreeSelect
 } from 'antd';
-import 'moment/locale/zh-cn'
+
 const FormItem = Form.Item;
 const defaultState = {
     confirmDirty: true,
-    eye:false
+    eye: false
 };
 
 class Mail extends Component {
@@ -53,7 +53,7 @@ class Mail extends Component {
             // this.setState({
             //     mail: nextProps.mail
             // });
-            if(nextProps.mail){
+            if (nextProps.mail) {
                 this.props.form.setFields({
                     email: {
                         value: '',
@@ -72,17 +72,17 @@ class Mail extends Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                this.props.fetchMail({mail:values.email,password:values.password})
+                this.props.fetchMail({mail: values.email, password: values.password})
             }
         });
     }
 
-    handleConfirmBlur (e) {
+    handleConfirmBlur(e) {
         const value = e.target.value;
-        this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+        this.setState({confirmDirty: this.state.confirmDirty || !!value});
     }
 
-    compareToFirstPassword (rule, value, callback) {
+    compareToFirstPassword(rule, value, callback) {
         const form = this.props.form;
         if (value && value !== form.getFieldValue('password')) {
             callback('两次密码不一致');
@@ -91,27 +91,35 @@ class Mail extends Component {
         }
     }
 
-    validateToNextPassword (rule, value, callback) {
+    validateToNextPassword(rule, value, callback) {
         const form = this.props.form;
-        if (value && this.state.confirmDirty) {
-            form.validateFields(['confirm'], { force: true });
+        if (!/^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,}$/.test(value)) {
+            callback('密码不符合规则');
         }
-        callback();
+        else if (form.getFieldValue('password').indexOf(form.getFieldValue('email')) !== -1) {
+            callback('密码不能包含邮箱');
+        }
+        // else if (value && this.state.confirmDirty) {
+        //     form.validateFields(['confirm'], {force: true});
+        // }
+        else {
+            callback();
+        }
+
     }
 
-    validateMail (rule, value, callback) {
-        console.log(rule, value, callback)
+    validateMail(rule, value, callback) {
 
         const form = this.props.form;
-        if (!/^(?=.*[a-zA-Z-])[0-9a-zA-Z][a-zA-Z0-9-]{0,13}[0-9a-zA-Z]$/.test(value)){
+        if (!/^(?=.*[a-zA-Z-])[0-9a-zA-Z][a-zA-Z0-9-]{0,13}[0-9a-zA-Z]$/.test(value)) {
             callback('密码不符合规则');
         } else {
             callback();
         }
     }
 
-    eye () {
-        this.setState({ eye: !this.state.eye });
+    eye() {
+        this.setState({eye: !this.state.eye});
     }
 
 
@@ -120,9 +128,9 @@ class Mail extends Component {
     }
 
     render() {
-        const {asset,mail} = this.props;
-        const { getFieldDecorator } = this.props.form;
-        const suffix = <Icon type="eye" style={{color:this.state.eye?'blue':'#dddddd'}} onClick={this.eye} />;
+        const {asset, mail} = this.props;
+        const {getFieldDecorator} = this.props.form;
+        const suffix = <Icon type="eye" style={{color: this.state.eye ? 'blue' : '#dddddd'}} onClick={this.eye}/>;
 
         return (
 
@@ -134,14 +142,14 @@ class Mail extends Component {
                             hasFeedback
                         >
                             {getFieldDecorator('email', {
-                                rules: [ {
+                                rules: [{
                                     required: true, message: '请输入邮箱',
                                 },
                                     {
                                         validator: this.validateMail
                                     }],
                             })(
-                                <Input />
+                                <Input/>
                             )}
                         </FormItem>
                         <FormItem
@@ -155,7 +163,7 @@ class Mail extends Component {
                                     validator: this.validateToNextPassword,
                                 }],
                             })(
-                                <Input type={this.state.eye?'text':'password'} suffix={suffix} />
+                                <Input type={this.state.eye ? 'text' : 'password'} suffix={suffix}/>
                             )}
                         </FormItem>
                         <FormItem
@@ -169,7 +177,7 @@ class Mail extends Component {
                                     validator: this.compareToFirstPassword,
                                 }],
                             })(
-                                <Input type="password" onBlur={this.handleConfirmBlur} />
+                                <Input type="password" onBlur={this.handleConfirmBlur}/>
                             )}
                         </FormItem>
                         <FormItem>
