@@ -7,7 +7,7 @@ import {Link, withRouter} from "react-router-dom";
 import * as actionTypes from "../../../config/actionTypes";
 import {connect} from "react-redux";
 import './index.less';
-import {Table, Input, Button, Icon, Modal, Spin, DatePicker, Select, Tabs, Form,TreeSelect} from 'antd';
+import {Table, Input, Button, Icon,Upload,Switch,Modal, Spin, message, DatePicker, Select, Tabs, Form,TreeSelect} from 'antd';
 const TabPane = Tabs.TabPane;
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
@@ -15,10 +15,12 @@ const Option = Select.Option;
 
 const defaultState = {
   visible: false,
+  loading: false,
   appId: undefined,
   station:undefined,
   innerStation:undefined,
   goods:undefined,
+  deviceType:'NOTEBOOK',
   catagery:[],
   innercatagery:undefined,
 };
@@ -42,6 +44,12 @@ const dataSource= [{
   action9: 'New1 Lake Park',
   action10: 'Nek',
 }];
+
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 
 class Back extends Component {
 
@@ -158,6 +166,11 @@ class Back extends Component {
     super(props);
     this.state = {...defaultState};
     this.handleTab = this.handleTab.bind(this);
+    this.normFile = this.normFile.bind(this);
+    this.handleUploadChange = this.handleUploadChange.bind(this);
+    this.onMarkChange = this.onMarkChange.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleOk = this.handleOk.bind(this);
     this.handleNew = this.handleNew.bind(this);
     this.handlePrev = this.handlePrev.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -178,7 +191,7 @@ class Back extends Component {
   }
 
   handleSubmit(e) {
-    e.preventDefault();
+    // e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
@@ -199,8 +212,29 @@ class Back extends Component {
   }
 
   handleTab(value) {
-    console.log(value);
+    this.setState({ deviceType:value });
   }
+
+  handleCancel(value) {
+    this.setState({visible: false})
+  }
+
+  handleOk(value) {
+    this.handleSubmit();
+    this.setState({visible: false})
+  }
+  getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+  }
+
+  onMarkChange(value) {
+
+
+  }
+
+
 
   handleNew(value) {
     console.log(value);
@@ -231,15 +265,37 @@ class Back extends Component {
     this.setState({ goods:value });
   }
 
+  handleUploadChange (info){
+    if (info.file.status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj, imageUrl => this.setState({
+        imageUrl,
+        loading: false,
+      }));
+    }
+  }
+
+  normFile (e) {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  }
+
 
   componentDidMount() {
-    this.props.fetchback();
+    this.props.fetchback({deviceType:this.state.deviceType});
   }
 
   render() {
     const {back} = this.props;
-    console.log(back)
     const { getFieldDecorator } = this.props.form;
+    const imageUrl = this.state.imageUrl;
 
     return (
 
@@ -249,11 +305,8 @@ class Back extends Component {
           width='900px'
           title="编辑"
           visible={this.state.visible}
-          onCancel={() => {
-            this.setState({visible: false})
-          }}
-          okButtonProps={{disabled: true}}
-          cancelButtonProps={{disabled: true}}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
         >
           <Form onSubmit={this.handleSubmit}>
 
@@ -279,9 +332,9 @@ class Back extends Component {
                       onChange={this.handleInnerCatagery}
                   >
                       {
-                          back &&back.list&& back.list.map((item, i) =>
-                              <Select.Option key={i} value={item.appId}>
-                                  {item.appName}({item.appId})
+                          back &&back.category&& back.category.map((item, i) =>
+                              <Select.Option key={i} value={item.id}>
+                                  {item.name}
                               </Select.Option>
                           )
                       }
@@ -358,16 +411,73 @@ class Back extends Component {
             </FormItem>
 
             <FormItem
-              wrapperCol={{ span: 12, offset: 5 }}
+              label="品牌"
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 18 }}
+              style={{'display':'inline-block','marginLeft': '120px'}}
             >
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
+              {getFieldDecorator('mark', {
+                rules: [{ required: true, message: '' }],
+              })(
+                <Input />
+              )}
             </FormItem>
+
+            <FormItem
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 5 }}
+              style={{'display':'inline-block','marginLeft': '60px'}}
+            >
+              {getFieldDecorator('markflag', { valuePropName: 'checked'})(
+                <Switch checkedChildren="开" unCheckedChildren="关" defaultChecked onChange={this.onMarkChange} />,
+              )}
+            </FormItem>
+
+            <FormItem
+              label="临时用机"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 12 }}
+            >
+              {getFieldDecorator('temp', { valuePropName: 'checked',rules: [{ required: true, message: '' }]})(
+                <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked  />,
+              )}
+            </FormItem>
+
+            <FormItem
+              label="上传图片"
+              extra="longgggggggggggggggggggggggggggggggggg"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 12 }}
+            >
+              {getFieldDecorator('upload', {
+                valuePropName: 'fileList',
+                getValueFromEvent: this.normFile,
+              })(
+
+                <Upload
+                  name="avatar"
+                  listType="picture-card"
+                  className="avatar-uploader"
+                  showUploadList={false}
+                  action="//jsonplaceholder.typicode.com/posts/"
+                  onChange={this.handleUploadChange}
+                >
+                  {imageUrl ?
+                    <img src={imageUrl} alt="avatar" /> :
+                    <div>
+                      <Icon type={this.state.loading ? 'loading' : 'plus'} />
+                      <div className="ant-upload-text">Upload</div>
+                    </div>
+                  }
+                </Upload>
+
+              )}
+            </FormItem>
+
           </Form>
         </Modal>
         <Tabs defaultActiveKey="1" onChange={this.handleTab}>
-          <TabPane tab="笔记本" key="1">
+          <TabPane tab="笔记本" key="NOTEBOOK">
             <div className="find">
               <div className="bank">
                 <Select
@@ -378,9 +488,9 @@ class Back extends Component {
                     onChange={this.handleCatagery}
                 >
                   {
-                      back &&back.list&& back.list.map((item, i) =>
-                      <Select.Option key={i} value={item.appId}>
-                        {item.appName}({item.appId})
+                    back &&back.category&& back.category.map((item, i) =>
+                      <Select.Option key={i} value={item.id}>
+                        {item.name}
                       </Select.Option>
                     )
                   }
@@ -404,7 +514,7 @@ class Back extends Component {
                       <TreeNode value="leaf2" title="your leaf" key="random1"/>
                     </TreeNode>
                     <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-                      <TreeNode value="sss" title={<b style={{color: '#08c'}}>sss</b>} key="random3"/>
+                      <TreeNode value="sss" title='sss' key="random3"/>
                     </TreeNode>
                   </TreeNode>
                 </TreeSelect>
@@ -419,28 +529,28 @@ class Back extends Component {
               <div className="bank">
                 <Button type="primary" onClick={this.handlePrev}>预览</Button>
               </div>
-              {
-                dataSource ?
-                  <Table
-                    dataSource={dataSource}
-                    columns={this.columns()}
-                    pagination={{pageSize: dataSource.pageSize, current: dataSource.page, total: dataSource.total}}
-                    scroll={{y: 640}}
-                    onChange={this.handleTableChange}
-                    locale={{emptyText: '暂无数据'}}
-                  />:
-                  <Table
-                    dataSource={dataSource}
-                    columns={this.columns()}
-                    scroll={{y: 640}}
-                    locale={{emptyText: '暂无数据'}}
-                  />
-              }
             </div>
+            {
+              dataSource ?
+                <Table
+                  dataSource={dataSource}
+                  columns={this.columns()}
+                  pagination={{pageSize: dataSource.pageSize, current: dataSource.page, total: dataSource.total}}
+                  scroll={{y: 640}}
+                  onChange={this.handleTableChange}
+                  locale={{emptyText: '暂无数据'}}
+                />:
+                <Table
+                  dataSource={dataSource}
+                  columns={this.columns()}
+                  scroll={{y: 640}}
+                  locale={{emptyText: '暂无数据'}}
+                />
+            }
           </TabPane>
-          <TabPane tab="显示器" key="2">2</TabPane>
-          <TabPane tab="主机" key="3">3</TabPane>
-          <TabPane tab="一体机" key="4">4</TabPane>
+          <TabPane tab="显示器" key="MONITOR">2</TabPane>
+          <TabPane tab="主机" key="HOST">3</TabPane>
+          <TabPane tab="一体机" key="UIONMAC">4</TabPane>
         </Tabs>
 
       </div>

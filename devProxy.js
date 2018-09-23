@@ -1,12 +1,6 @@
 module.exports = {
     test: {
-        '^/api/account/**': {
-            target: 'http://test.cash.pay.sogou/',
-            hostRewrite: 'http://test.cash.pay.sogou/',
-            changeOrigin: true,
-            secure: false,
-        },
-        '^/api/accounting/**': {
+        '^/asertManager/**': {
             target: 'http://localhost:3001/',
             hostRewrite: 'http://localhost:3001/',
             changeOrigin: true,

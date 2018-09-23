@@ -12,10 +12,9 @@ function* fetchback(action) {
   const {payload} = action;
   try {
 
-    const data=yield service.get(API[ENTITY_BACK]);
-
-
-    console.log(data)
+    const data=yield service.get(API[ENTITY_BACK],{
+      deviceType:payload.deviceType
+    });
 
     yield put({
       type: actionTypes.UPDATE_BACK,
