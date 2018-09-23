@@ -212,7 +212,12 @@ class Back extends Component {
                               tempUseInner: record.tempUse,
                               assetPictureInner: record.assetPicture,
                               assetStatusInner: record.assetStatus,
-                          },()=>{this.setState({visible: true})
+                          },()=>{
+
+                                  this.props.form.setFieldsValue({
+                                      categoryId: record.categoryId,
+                                  });
+                              this.setState({visible: true})
                           })
 
                       }
@@ -445,18 +450,17 @@ class Back extends Component {
                             <span>笔记本</span>
                         </FormItem>
 
-                        {/*<FormItem*/}
-                            {/*label="选择品类"*/}
-                            {/*labelCol={{span: 5}}*/}
-                            {/*wrapperCol={{span: 12}}*/}
-                        {/*>*/}
-                            {/*{getFieldDecorator('categoryId', {*/}
-                                {/*rules: [{required: true, message: 'Please select your gender!'}],*/}
-                            {/*})(*/}
+                        <FormItem
+                            label="选择品类"
+                            labelCol={{span: 5}}
+                            wrapperCol={{span: 12}}
+                        >
+                            {getFieldDecorator('categoryId', {
+                                rules: [{required: true, message: 'Please select your gender!'}],
+                            })(
                                 <Select
                                     style={{width: 300}}
                                     placeholder="请选择品类"
-                                    defaultValue={this.state.categoryIdInner}
                                     onChange={this.handleCatagoryInner}
                                 >
                                     {
@@ -467,8 +471,8 @@ class Back extends Component {
                                         )
                                     }
                                 </Select>
-                            {/*)}*/}
-                        {/*</FormItem>*/}
+                            )}
+                        </FormItem>
 
                         {/*<FormItem*/}
                         {/*label="品类ID"*/}
