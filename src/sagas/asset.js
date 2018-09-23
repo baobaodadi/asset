@@ -3,9 +3,10 @@
  */
 import {takeLatest, put} from 'redux-saga/effects';
 import service from '../utils/service';
+import serviceMail from '../utils/serviceMail';
 import API from '../config/api';
 import * as actionTypes from '../config/actionTypes';
-import {ENTITY_ASSET} from '../config/constants';
+import {ENTITY_ASSET,ENTITY_CHANGEASSET} from '../config/constants';
 
 
 function* fetchAsset(action) {
@@ -28,8 +29,24 @@ function* fetchAsset(action) {
   }
 }
 
+function* changeAsset(action) {
+    const {payload} = action;
+    try {
+        const data=yield serviceMail.post(API[ENTITY_CHANGEASSET], {
+            preAsset: payload.preAsset,
+            tmpAsset: payload.tmpAsset,
+        });
+        console.log(data)
+
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+
 export default function* () {
   yield [
     takeLatest(actionTypes.FETCH_ASSET, fetchAsset),
+    takeLatest(actionTypes.CHANGE_ASSET, changeAsset),
   ];
 }

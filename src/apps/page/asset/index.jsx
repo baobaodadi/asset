@@ -16,6 +16,8 @@ const RadioButton = Radio.Button;
 
 const defaultState = {
     goods: [],
+    preAsset:'',
+    tmpAsset:''
 };
 
 class Asset extends Component {
@@ -24,6 +26,7 @@ class Asset extends Component {
         super(props);
         this.state = {...defaultState};
         this.handleSelect = this.handleSelect.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
     }
 
@@ -39,7 +42,14 @@ class Asset extends Component {
     }
 
     handleSelect(e) {
-        console.log(e.target.value);
+        // console.log(e.target.value);
+        this.setState({preAsset:e.target.value,tmpAsset:e.target.value})
+    }
+
+    handleSubmit(e) {
+
+      this.props.changeAsset({preAsset:this.state.preAsset, tmpAsset:this.state.tmpAsset})
+
     }
 
 
@@ -135,6 +145,7 @@ class Asset extends Component {
                     </TabPane>
                     <TabPane tab="一体机" key="3">3</TabPane>
                 </Tabs>
+                <Button type="primary" onClick={this.handleSubmit}>保存</Button>
             </div>
         );
     }
@@ -150,6 +161,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     fetchAsset: (payload) => dispatch({
         type: actionTypes.FETCH_ASSET,
+    }),
+    changeAsset: (payload) => dispatch({
+        type: actionTypes.CHANGE_ASSET,
+        payload
     }),
 });
 
