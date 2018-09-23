@@ -27,6 +27,7 @@ import 'moment/locale/zh-cn'
 const FormItem = Form.Item;
 const defaultState = {
     confirmDirty: true,
+    eye:false
 };
 
 class Mail extends Component {
@@ -36,6 +37,7 @@ class Mail extends Component {
         this.state = {...defaultState};
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateMail = this.validateMail.bind(this);
+        this.eye = this.eye.bind(this);
         this.handleConfirmBlur = this.handleConfirmBlur.bind(this);
         this.compareToFirstPassword = this.compareToFirstPassword.bind(this);
         this.validateToNextPassword = this.validateToNextPassword.bind(this);
@@ -108,6 +110,10 @@ class Mail extends Component {
         }
     }
 
+    eye () {
+        this.setState({ eye: !this.state.eye });
+    }
+
 
     componentDidMount() {
         this.props.fetchAsset();
@@ -116,7 +122,7 @@ class Mail extends Component {
     render() {
         const {asset,mail} = this.props;
         const { getFieldDecorator } = this.props.form;
-
+        const suffix = <Icon type="eye" style={{color:this.state.eye?'blue':'#dddddd'}} onClick={this.eye} />;
 
         return (
 
@@ -149,7 +155,7 @@ class Mail extends Component {
                                     validator: this.validateToNextPassword,
                                 }],
                             })(
-                                <Input type="password" />
+                                <Input type={this.state.eye?'text':'password'} suffix={suffix} />
                             )}
                         </FormItem>
                         <FormItem
