@@ -1,12 +1,16 @@
 import {combineReducers} from 'redux';
 import asset from './asset';
-import back from './back';
-import globle from './globle';
 import mail from './mail';
 
+import globle from './globle';
+import back from './back';
+import list from './list';
+
+
 export default combineReducers({
-  asset,
-  back,
-  mail,
-  globle,
+    asset,
+    mail,
+    globle,
+    back,
+    list,
 });

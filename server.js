@@ -6,7 +6,8 @@ const middlewares = jsonServer.defaults();
 server.use(middlewares);
 server.use(jsonServer.rewriter({
   // "/api/accounting/*/:id": "/$1/:id",
-  "/getCategory": "/asertManager/category/getCategory",
+  "/getCategory": "/assetManager/category/getCategory",
+  "/getAssetList": "/assetManager/asset/getAssetList",
 }));
 server.use(router);
 server.listen(3001, () => {

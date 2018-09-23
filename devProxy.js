@@ -1,6 +1,6 @@
 module.exports = {
     test: {
-        '^/asertManager/**': {
+        '^/assetManager/**': {
             target: 'http://localhost:3001/',
             hostRewrite: 'http://localhost:3001/',
             changeOrigin: true,

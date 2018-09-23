@@ -137,7 +137,8 @@ class Asset extends Component {
                                                     </Card>
                                                 </List.Item>
                                             )}
-                                        /> </RadioGroup>
+                                        />
+                                    </RadioGroup>
                                     : null
                             }
 
