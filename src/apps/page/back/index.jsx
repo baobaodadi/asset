@@ -8,10 +8,6 @@ import * as actionTypes from "../../../config/actionTypes";
 import {connect} from "react-redux";
 import './index.less';
 import {Table, Input, Button, Icon, Modal, Spin, DatePicker, Select, Tabs, Form,TreeSelect} from 'antd';
-
-const {MonthPicker, RangePicker, WeekPicker} = DatePicker;
-import moment from 'moment'
-import 'moment/locale/zh-cn'
 const TabPane = Tabs.TabPane;
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
@@ -23,6 +19,8 @@ const defaultState = {
   station:undefined,
   innerStation:undefined,
   goods:undefined,
+  catagery:[],
+  innercatagery:undefined,
 };
 
 const dataSource= [{
@@ -54,14 +52,12 @@ class Back extends Component {
         dataIndex: 'outSettleTime',
         key: 'outSettleTime',
         width: 150,
-        render: row => moment(row).format('YYYY-MM-DD')
       },
       {
         title: '设备图片',
         dataIndex: 'settleDays',
         key: 'settleDays',
         width: 200,
-        render: row => row.length > 8 ? moment(row.split(',')[0]).format('YYYYMMDD') + '~' + moment(row.split(',')[row.split(',').length - 1]).format('YYYYMMDD') : moment(row).format('YYYYMMDD')
       },
       {
         title: '品类',
@@ -166,6 +162,7 @@ class Back extends Component {
     this.handlePrev = this.handlePrev.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInnerCatagery = this.handleInnerCatagery.bind(this);
+    this.handleCatagery = this.handleCatagery.bind(this);
     this.handlePerson = this.handlePerson.bind(this);
     this.handleGoods = this.handleGoods.bind(this);
     this.handleStation = this.handleStation.bind(this);
@@ -173,10 +170,10 @@ class Back extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.appList !== this.props.appList)
-      this.setState({
-        appList: nextProps.appList
-      });
+    // if (nextProps.appList !== this.props.appList)
+    //   this.setState({
+    //     appList: nextProps.appList
+    //   });
 
   }
 
@@ -188,6 +185,10 @@ class Back extends Component {
       }
     });
   }
+
+    handleCatagery(value) {
+        console.log(value);
+    }
 
   handleInnerCatagery(value) {
     console.log(value);
@@ -232,11 +233,12 @@ class Back extends Component {
 
 
   componentDidMount() {
-    // this.props.fetchApps();
+    this.props.fetchback();
   }
 
   render() {
-    const {appList} = this.state;
+    const {back} = this.props;
+    console.log(back)
     const { getFieldDecorator } = this.props.form;
 
     return (
@@ -271,13 +273,19 @@ class Back extends Component {
               {getFieldDecorator('goods', {
                 rules: [{ required: true, message: 'Please select your gender!' }],
               })(
-                <Select
-                  placeholder="Select a option and change input text above"
-                  onChange={this.handleInnerCatagery}
-                >
-                  <Option value="male">male</Option>
-                  <Option value="female">female</Option>
-                </Select>
+                  <Select
+                      style={{ width: 300 }}
+                      placeholder="请选择品类"
+                      onChange={this.handleInnerCatagery}
+                  >
+                      {
+                          back &&back.list&& back.list.map((item, i) =>
+                              <Select.Option key={i} value={item.appId}>
+                                  {item.appName}({item.appId})
+                              </Select.Option>
+                          )
+                      }
+                  </Select>
               )}
             </FormItem>
 
@@ -318,7 +326,7 @@ class Back extends Component {
             </FormItem>
 
             <FormItem
-              label="保留库存"
+              label="选择岗位"
               labelCol={{ span: 5 }}
               wrapperCol={{ span: 12 }}
             >
@@ -336,13 +344,13 @@ class Back extends Component {
                   treeDefaultExpandAll
                   onChange={this.handleInnerStation}
                 >
-                  <TreeNode value="parent 1" title="parent 1" key="0-1">
+                  <TreeNode value="parent 1" title="parent 1" key="0-1" selectable={false}>
                     <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
                       <TreeNode value="leaf1" title="my leaf" key="random"/>
                       <TreeNode value="leaf2" title="your leaf" key="random1"/>
                     </TreeNode>
                     <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-                      <TreeNode value="sss" title={<b style={{color: '#08c'}}>sss</b>} key="random3"/>
+                      <TreeNode value="sss" title='sss' key="random3"/>
                     </TreeNode>
                   </TreeNode>
                 </TreeSelect>
@@ -363,14 +371,14 @@ class Back extends Component {
             <div className="find">
               <div className="bank">
                 <Select
-                  style={{width: 220}}
-                  placeholder="请选择人员"
-                  value={this.state.appId}
-                  onChange={this.handlePerson}
-                  allowClear={true}
+                    mode="multiple"
+                    style={{ width: 300 }}
+                    placeholder="请选择品类"
+                    defaultValue={this.state.catagery}
+                    onChange={this.handleCatagery}
                 >
                   {
-                    appList && appList.list.map((item, i) =>
+                      back &&back.list&& back.list.map((item, i) =>
                       <Select.Option key={i} value={item.appId}>
                         {item.appName}({item.appId})
                       </Select.Option>
@@ -389,29 +397,6 @@ class Back extends Component {
                   multiple
                   treeDefaultExpandAll
                   onChange={this.handleStation}
-                >
-                  <TreeNode value="parent 1" title="parent 1" key="0-1">
-                    <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-                      <TreeNode value="leaf1" title="my leaf" key="random"/>
-                      <TreeNode value="leaf2" title="your leaf" key="random1"/>
-                    </TreeNode>
-                    <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-                      <TreeNode value="sss" title={<b style={{color: '#08c'}}>sss</b>} key="random3"/>
-                    </TreeNode>
-                  </TreeNode>
-                </TreeSelect>
-              </div>
-              <div className="bank">
-                <TreeSelect
-                  showSearch
-                  style={{width: 300}}
-                  value={this.state.goods}
-                  dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
-                  placeholder="请选择品类"
-                  allowClear
-                  multiple
-                  treeDefaultExpandAll
-                  onChange={this.handleGoods}
                 >
                   <TreeNode value="parent 1" title="parent 1" key="0-1">
                     <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
@@ -465,16 +450,16 @@ class Back extends Component {
 
 const mapStateToProps = state => {
   return ({
-    appList: state.apps.data,
+      back: state.back.data,
   })
 };
 
 
 const mapDispatchToProps = dispatch => ({
-  // fetchApps: (payload) => dispatch({
-  //   type: actionTypes.FETCH_APPS,
-  //   payload
-  // }),
+    fetchback: (payload) => dispatch({
+    type: actionTypes.FETCH_BACK,
+    payload
+  }),
 });
 
 

@@ -13,7 +13,7 @@ class Headers extends Component {
           <Link to="/">
             <img src={logo}/>
           </Link>
-          <h1>资产管理后台</h1>
+          <h1>支付管理后台</h1>
           {/*<Avatar src={user && user.headImg}/>*/}
         </div>
 

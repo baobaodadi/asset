@@ -6,7 +6,7 @@ import service from '../utils/service';
 import serviceMail from '../utils/serviceMail';
 import API from '../config/api';
 import * as actionTypes from '../config/actionTypes';
-import {ENTITY_ASSET,ENTITY_CHANGEASSET} from '../config/constants';
+import {ENTITY_ASSET,ENTITY_CHANGE} from '../config/constants';
 
 
 function* fetchAsset(action) {
@@ -32,7 +32,7 @@ function* fetchAsset(action) {
 function* changeAsset(action) {
     const {payload} = action;
     try {
-        const data=yield serviceMail.post(API[ENTITY_CHANGEASSET], {
+        const data=yield serviceMail.post(API[ENTITY_CHANGE], {
             preAsset: payload.preAsset,
             tmpAsset: payload.tmpAsset,
         });

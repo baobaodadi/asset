@@ -7,7 +7,7 @@ const inintialState = {
 };
 
 export default handleActions({
-  [actionTypes.UPDATE_APPS]: (state, {payload}) => ({
+  [actionTypes.UPDATE_BACK]: (state, {payload}) => ({
     ...state,
     ...payload
   }),

@@ -18,10 +18,10 @@ class Routes extends Component {
   render() {
     return (
       <Switch>
+        <Route exact path="/back" component={Back}/>
         <Route exact path="/asset" component={Asset}/>
         <Route exact path="/mail" component={Mail}/>
-        <Route exact path="/back" component={Back}/>
-        <Redirect from="/" to="/asset"/>
+        <Redirect from="/" to="back"/>
       </Switch>
     );
   }

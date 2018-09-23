@@ -5,17 +5,20 @@ import {takeLatest, put} from 'redux-saga/effects';
 import service from '../utils/service';
 import API from '../config/api';
 import * as actionTypes from '../config/actionTypes';
-import {ENTITY_APPS} from '../config/constants';
+import {ENTITY_BACK} from '../config/constants';
 
 
-function* fetchApps(action) {
+function* fetchback(action) {
   const {payload} = action;
   try {
 
-    const data=yield service.get(API[ENTITY_APPS]);
+    const data=yield service.get(API[ENTITY_BACK]);
+
+
+    console.log(data)
 
     yield put({
-      type: actionTypes.UPDATE_APPS,
+      type: actionTypes.UPDATE_BACK,
       payload:  {
         data: data,
       },
@@ -29,6 +32,6 @@ function* fetchApps(action) {
 
 export default function* () {
   yield [
-    takeLatest(actionTypes.FETCH_APPS, fetchApps),
+    takeLatest(actionTypes.FETCH_BACK, fetchback),
   ];
 }

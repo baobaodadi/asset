@@ -18,26 +18,6 @@ class SiderMenu extends Component {
     super(props);
   }
 
-  getNavMenuItems(menus) {
-    return (
-      <Menu>
-        {
-          menus && menus.map((item, i) =>
-            <Menu.Item key={item.key}>
-              <Link
-                to={'/' + item.key}
-              >
-                {/*<Icon type={item.type}/>*/}
-                <span>{item.content}</span>
-              </Link>
-            </Menu.Item>
-          )
-        }
-      </Menu>
-
-    )
-  };
-
   render() {
     const {location} = this.props;
     return (
@@ -45,14 +25,22 @@ class SiderMenu extends Component {
           inlineIndent="40"
           className="aside-container menu-site"
           mode="inline"
-          defaultSelectedKeys={['/asset']}
+          defaultSelectedKeys={['back']}
           selectedKeys={[location.pathname.slice(1,location.pathname.length)]}
         >
-          {this.getNavMenuItems(menus)}
+          {
+              menus && menus.map((item, i) =>
+                  <Menu.Item key={item.key}>
+                      <Link
+                          to={'/' + item.key}
+                      >
+                          <span>{item.content}</span>
+                      </Link>
+                  </Menu.Item>)
+          }
         </Menu>
     );
   }
 }
-
 
 export default withRouter(SiderMenu);
