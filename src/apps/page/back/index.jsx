@@ -87,7 +87,7 @@ class Back extends Component {
                 key: 'assetPicture',
                 width: 200,
                 render: (text) => (
-                    <img src={text} alt="" style={{width:'100%'}}/>
+                    <img src={text} alt="" style={{width: '100%'}}/>
                 ),
             },
             {
@@ -186,7 +186,7 @@ class Back extends Component {
                 render: (text, record) => (
                     <span>
                       <a onClick={() => {
-                          this.setState({
+                          this.props.form.setFieldsValue({
                               positionIdInner: record.positionId,
                               categoryIdInner: record.categoryId,
                               assetStockInner: record.assetStock,
@@ -212,13 +212,8 @@ class Back extends Component {
                               tempUseInner: record.tempUse,
                               assetPictureInner: record.assetPicture,
                               assetStatusInner: record.assetStatus,
-                          },()=>{
-
-                                  this.props.form.setFieldsValue({
-                                      categoryId: record.categoryId,
-                                  });
-                              this.setState({visible: true})
-                          })
+                          });
+                          this.setState({visible: true})
 
                       }
                       }>编辑</a>
@@ -241,7 +236,6 @@ class Back extends Component {
         this.handleTab = this.handleTab.bind(this);
         this.normFile = this.normFile.bind(this);
         this.handleUploadChange = this.handleUploadChange.bind(this);
-        this.onMarkChange = this.onMarkChange.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
@@ -267,8 +261,37 @@ class Back extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.props.fetchadd({
+                    positionId: values.positionIdInner,
+                    categoryId: values.categoryIdInner,
+                    assetStock: values.assetStockInner,
+                    assetKeepStock: values.assetKeepStockInner,
+                    brand: values.brandInner,
+                    brandStatus: values.brandStatusInner,
+                    os: values.osInner,
+                    osStatus: values.osStatusInner,
+                    size: values.sizeInner,
+                    sizeStatus: values.sizeStatusInner,
+                    memory: values.memoryInner,
+                    memoryStatus: values.memoryStatusInner,
+                    disk: values.diskInner,
+                    diskStatus: values.diskStatusInner,
+                    cpu: values.cpuInner,
+                    cpuStatus: values.cpuStatusInner,
+                    card: values.cardInner,
+                    cardStatus: values.cardStatusInner,
+                    resolution: values.resolutionInner,
+                    resolutionStatus: values.resolutionStatusInner,
+                    interface: values.interfaceInner,
+                    interfaceStatus: values.interfaceStatusInner,
+                    tempUse: values.tempUseInner,
+                    assetPicture: values.assetPictureInner,
+                    assetStatus: values.assetStatusInner,
+                })
             }
         });
+
+
     }
 
 
@@ -302,11 +325,6 @@ class Back extends Component {
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result));
         reader.readAsDataURL(img);
-    }
-
-    onMarkChange(value) {
-
-
     }
 
 
@@ -347,7 +365,7 @@ class Back extends Component {
         if (info.file.status === 'done') {
             // Get this url from response in real world.
             getBase64(info.file.originFileObj, imageUrl => this.setState({
-                imageUrl,
+                assetPictureInner: imageUrl,
                 loading: false,
             }));
         }
@@ -426,10 +444,9 @@ class Back extends Component {
     render() {
         const {back, list} = this.props;
         const {getFieldDecorator} = this.props.form;
-        const imageUrl = this.state.imageUrl;
+        const imageUrl = this.state.assetPictureInner;
 
         return (
-
             <div className="back">
                 <Modal
                     centered
@@ -455,7 +472,7 @@ class Back extends Component {
                             labelCol={{span: 5}}
                             wrapperCol={{span: 12}}
                         >
-                            {getFieldDecorator('categoryId', {
+                            {getFieldDecorator('categoryIdInner', {
                                 rules: [{required: true, message: 'Please select your gender!'}],
                             })(
                                 <Select
@@ -503,7 +520,7 @@ class Back extends Component {
                             labelCol={{span: 5}}
                             wrapperCol={{span: 12}}
                         >
-                            {getFieldDecorator('rese', {
+                            {getFieldDecorator('assetKeepStockInner', {
                                 rules: [{required: true, message: ''}],
                             })(
                                 <Input/>
@@ -515,13 +532,13 @@ class Back extends Component {
                             labelCol={{span: 5}}
                             wrapperCol={{span: 12}}
                         >
-                            {getFieldDecorator('innerPosition', {
+                            {getFieldDecorator('positionIdInner', {
                                 rules: [{required: true}],
                             })(
                                 <TreeSelect
                                     showSearch
                                     style={{width: 300}}
-                                    value={this.state.innerPosition}
+                                    // value={this.state.innerPosition}
                                     dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                                     placeholder="请选择岗位"
                                     allowClear
@@ -542,51 +559,266 @@ class Back extends Component {
                             )}
                         </FormItem>
 
-                        <FormItem
-                            label="品牌"
-                            labelCol={{span: 6}}
-                            wrapperCol={{span: 18}}
-                            style={{'display': 'inline-block', 'marginLeft': '120px'}}
-                        >
-                            {getFieldDecorator('mark', {
-                                rules: [{required: true, message: ''}],
-                            })(
-                                <Input/>
-                            )}
-                        </FormItem>
+                        <ul className='innerlist'>
+                            <li>
+                                <FormItem
+                                    label="品牌"
+                                    labelCol={{span: 6}}
+                                    wrapperCol={{span: 18}}
+                                    style={{'display': 'inline-block', 'marginLeft': '80px'}}
+                                >
+                                    {getFieldDecorator('brandInner', {
+                                        rules: [{required: true, message: ''}],
+                                    })(
+                                        <Input/>
+                                    )}
+                                </FormItem>
 
-                        <FormItem
-                            labelCol={{span: 5}}
-                            wrapperCol={{span: 5}}
-                            style={{'display': 'inline-block', 'marginLeft': '60px'}}
-                        >
-                            {getFieldDecorator('markflag', {valuePropName: 'checked'})(
-                                <Switch checkedChildren="开" unCheckedChildren="关" defaultChecked
-                                        onChange={this.onMarkChange}/>,
-                            )}
-                        </FormItem>
+                                <FormItem
+                                    labelCol={{span: 5}}
+                                    wrapperCol={{span: 5}}
+                                    style={{'display': 'inline-block', 'marginLeft': '60px'}}
+                                >
+                                    {getFieldDecorator('brandStatusInner', {
+                                        valuePropName: 'checked'
+                                    })(
+                                        <Switch checkedChildren="开" unCheckedChildren="关"/>,
+                                    )}
+                                </FormItem>
+                            </li>
+                            <li>
+                                <FormItem
+                                    label="系统"
+                                    labelCol={{span: 6}}
+                                    wrapperCol={{span: 18}}
+                                    style={{'display': 'inline-block', 'marginLeft': '80px'}}
+                                >
+                                    {getFieldDecorator('osInner', {
+                                        rules: [{required: true, message: ''}],
+                                    })(
+                                        <Input/>
+                                    )}
+                                </FormItem>
+
+                                <FormItem
+                                    labelCol={{span: 5}}
+                                    wrapperCol={{span: 5}}
+                                    style={{'display': 'inline-block', 'marginLeft': '60px'}}
+                                >
+                                    {getFieldDecorator('osStatusInner', {
+                                        valuePropName: 'checked'
+                                    })(
+                                        <Switch checkedChildren="开" unCheckedChildren="关"/>,
+                                    )}
+                                </FormItem>
+                            </li>
+                            <li>
+                                <FormItem
+                                    label="尺寸"
+                                    labelCol={{span: 6}}
+                                    wrapperCol={{span: 18}}
+                                    style={{'display': 'inline-block', 'marginLeft': '80px'}}
+                                >
+                                    {getFieldDecorator('sizeInner', {
+                                        rules: [{required: true, message: ''}],
+                                    })(
+                                        <Input/>
+                                    )}
+                                </FormItem>
+
+                                <FormItem
+                                    labelCol={{span: 5}}
+                                    wrapperCol={{span: 5}}
+                                    style={{'display': 'inline-block', 'marginLeft': '60px'}}
+                                >
+                                    {getFieldDecorator('sizeStatusInner', {
+                                        valuePropName: 'checked'
+                                    })(
+                                        <Switch checkedChildren="开" unCheckedChildren="关"/>,
+                                    )}
+                                </FormItem>
+                            </li>
+
+                            <li>
+                                <FormItem
+                                    label="内存"
+                                    labelCol={{span: 6}}
+                                    wrapperCol={{span: 18}}
+                                    style={{'display': 'inline-block', 'marginLeft': '80px'}}
+                                >
+                                    {getFieldDecorator('memoryInner', {
+                                        rules: [{required: true, message: ''}],
+                                    })(
+                                        <Input/>
+                                    )}
+                                </FormItem>
+
+                                <FormItem
+                                    labelCol={{span: 5}}
+                                    wrapperCol={{span: 5}}
+                                    style={{'display': 'inline-block', 'marginLeft': '60px'}}
+                                >
+                                    {getFieldDecorator('memoryStatusInner', {
+                                        valuePropName: 'checked'
+                                    })(
+                                        <Switch checkedChildren="开" unCheckedChildren="关"/>,
+                                    )}
+                                </FormItem>
+                            </li>
+                            <li>
+                                <FormItem
+                                    label="硬盘"
+                                    labelCol={{span: 6}}
+                                    wrapperCol={{span: 18}}
+                                    style={{'display': 'inline-block', 'marginLeft': '80px'}}
+                                >
+                                    {getFieldDecorator('diskInner', {
+                                        rules: [{required: true, message: ''}],
+                                    })(
+                                        <Input/>
+                                    )}
+                                </FormItem>
+
+                                <FormItem
+                                    labelCol={{span: 5}}
+                                    wrapperCol={{span: 5}}
+                                    style={{'display': 'inline-block', 'marginLeft': '60px'}}
+                                >
+                                    {getFieldDecorator('diskStatusInner', {
+                                        valuePropName: 'checked'
+                                    })(
+                                        <Switch checkedChildren="开" unCheckedChildren="关"/>,
+                                    )}
+                                </FormItem>
+                            </li>
+
+                            <li>
+                                <FormItem
+                                    label="cpu"
+                                    labelCol={{span: 6}}
+                                    wrapperCol={{span: 18}}
+                                    style={{'display': 'inline-block', 'marginLeft': '80px'}}
+                                >
+                                    {getFieldDecorator('cpuInner', {
+                                        rules: [{required: true, message: ''}],
+                                    })(
+                                        <Input/>
+                                    )}
+                                </FormItem>
+
+                                <FormItem
+                                    labelCol={{span: 5}}
+                                    wrapperCol={{span: 5}}
+                                    style={{'display': 'inline-block', 'marginLeft': '60px'}}
+                                >
+                                    {getFieldDecorator('cpuStatusInner', {
+                                        valuePropName: 'checked'
+                                    })(
+                                        <Switch checkedChildren="开" unCheckedChildren="关"/>,
+                                    )}
+                                </FormItem>
+                            </li>
+                            <li>
+                                <FormItem
+                                    label="显卡"
+                                    labelCol={{span: 6}}
+                                    wrapperCol={{span: 18}}
+                                    style={{'display': 'inline-block', 'marginLeft': '80px'}}
+                                >
+                                    {getFieldDecorator('cardInner', {
+                                        rules: [{required: true, message: ''}],
+                                    })(
+                                        <Input/>
+                                    )}
+                                </FormItem>
+
+                                <FormItem
+                                    labelCol={{span: 5}}
+                                    wrapperCol={{span: 5}}
+                                    style={{'display': 'inline-block', 'marginLeft': '60px'}}
+                                >
+                                    {getFieldDecorator('cardStatusInner', {
+                                        valuePropName: 'checked'
+                                    })(
+                                        <Switch checkedChildren="开" unCheckedChildren="关"/>,
+                                    )}
+                                </FormItem>
+                            </li>
+                            <li>
+                                <FormItem
+                                    label="分辨率"
+                                    labelCol={{span: 6}}
+                                    wrapperCol={{span: 18}}
+                                    style={{'display': 'inline-block', 'marginLeft': '80px'}}
+                                >
+                                    {getFieldDecorator('resolutionInner', {
+                                        rules: [{required: true, message: ''}],
+                                    })(
+                                        <Input/>
+                                    )}
+                                </FormItem>
+
+                                <FormItem
+                                    labelCol={{span: 5}}
+                                    wrapperCol={{span: 5}}
+                                    style={{'display': 'inline-block', 'marginLeft': '60px'}}
+                                >
+                                    {getFieldDecorator('resolutionStatusInner', {
+                                        valuePropName: 'checked'
+                                    })(
+                                        <Switch checkedChildren="开" unCheckedChildren="关"/>,
+                                    )}
+                                </FormItem>
+                            </li>
+                            <li>
+                                <FormItem
+                                    label="接口"
+                                    labelCol={{span: 6}}
+                                    wrapperCol={{span: 18}}
+                                    style={{'display': 'inline-block', 'marginLeft': '80px'}}
+                                >
+                                    {getFieldDecorator('interfaceInner', {
+                                        rules: [{required: true, message: ''}],
+                                    })(
+                                        <Input/>
+                                    )}
+                                </FormItem>
+
+                                <FormItem
+                                    labelCol={{span: 5}}
+                                    wrapperCol={{span: 5}}
+                                    style={{'display': 'inline-block', 'marginLeft': '60px'}}
+                                >
+                                    {getFieldDecorator('interfaceStatusInner', {
+                                        valuePropName: 'checked'
+                                    })(
+                                        <Switch checkedChildren="开" unCheckedChildren="关"/>,
+                                    )}
+                                </FormItem>
+                            </li>
+                        </ul>
 
                         <FormItem
                             label="临时用机"
                             labelCol={{span: 5}}
                             wrapperCol={{span: 12}}
                         >
-                            {getFieldDecorator('temp', {
+                            {getFieldDecorator('tempUseInner', {
                                 valuePropName: 'checked',
                                 rules: [{required: true, message: ''}]
                             })(
-                                <Switch checkedChildren="是" unCheckedChildren="否" defaultChecked/>,
+                                <Switch checkedChildren="是" unCheckedChildren="否"/>,
                             )}
                         </FormItem>
 
                         <FormItem
                             label="上传图片"
-                            extra="longgggggggggggggggggggggggggggggggggg"
+                            extra="限制500K"
                             labelCol={{span: 5}}
                             wrapperCol={{span: 12}}
                         >
-                            {getFieldDecorator('upload', {
-                                valuePropName: 'fileList',
+                            {getFieldDecorator('assetPictureInner', {
+                                // valuePropName: 'fileList',
                                 getValueFromEvent: this.normFile,
                             })(
                                 <Upload
@@ -640,7 +872,6 @@ class Back extends Component {
                         {this.searchBar(back)}
                     </TabPane>
                 </Tabs>
-
             </div>
         );
     }
@@ -661,6 +892,14 @@ const mapDispatchToProps = dispatch => ({
     }),
     fetchlist: (payload) => dispatch({
         type: actionTypes.FETCH_LIST,
+        payload
+    }),
+    fetchadd: (payload) => dispatch({
+        type: actionTypes.FETCH_ADD,
+        payload
+    }),
+    fetchedit: (payload) => dispatch({
+        type: actionTypes.FETCH_EDIT,
         payload
     }),
 });
