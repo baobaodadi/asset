@@ -3,9 +3,7 @@
  */
 
 import React, {Component} from 'react';
-import Asset from './asset/index.jsx';
 import Back from './back/index.jsx';
-import Mail from './mail/index.jsx';
 
 import {
   Route,
@@ -19,8 +17,6 @@ class Routes extends Component {
     return (
       <Switch>
         <Route exact path="/back" component={Back}/>
-        <Route exact path="/asset" component={Asset}/>
-        <Route exact path="/mail" component={Mail}/>
         <Redirect from="/" to="back"/>
       </Switch>
     );
