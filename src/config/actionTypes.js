@@ -12,3 +12,12 @@ export const UPDATE_EDIT = 'update_edit';
 
 export const FETCH_ADD = 'fetch_add';
 export const UPDATE_ADD = 'update_add';
+
+export const FETCH_LOG = 'fetch_log';
+export const UPDATE_LOG = 'update_log';
+
+export const FETCH_PRE = 'fetch_pre';
+export const UPDATE_PRE = 'update_pre';
+
+export const FETCH_SORT = 'fetch_sort';
+export const UPDATE_SORT = 'update_sort';

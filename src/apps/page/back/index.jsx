@@ -186,7 +186,8 @@ class Back extends Component {
                 width: 300,
                 render: (text, record) => (
                     <span>
-                      <a onClick={() => {
+                      <a
+                          onClick={() => {
                           this.props.form.setFieldsValue({
                               positionIdInner: record.positionId,
                               categoryIdInner: record.categoryId,
@@ -217,16 +218,26 @@ class Back extends Component {
                           this.setState({
                               assetId:record.assetId,
                                   visible: true
-                          })
-
-                      }
-                      }>编辑</a>
+                          })}}
+                      >编辑</a>
                       <Divider type="vertical"/>
-                      <a href="javascript:;">推荐</a>
+                      <a
+                          onClick={() => {
+                              this.props.fetchsort({ assetId:record.assetId,recommand:1})
+                              }}
+                      >推荐</a>
                         <Divider type="vertical"/>
-                      <a href="javascript:;">置上</a>
+                      <a
+                          onClick={() => {
+                              this.props.fetchsort({ assetId:record.assetId,move:1})
+                          }}
+                      >置上</a>
                         <Divider type="vertical"/>
-                      <a href="javascript:;">置下</a>
+                      <a
+                          onClick={() => {
+                              this.props.fetchsort({ assetId:record.assetId,move:-1})
+                          }}
+                      >置下</a>
                     </span>
                 ),
             }
@@ -968,6 +979,10 @@ const mapDispatchToProps = dispatch => ({
         type: actionTypes.FETCH_EDIT,
         payload
     }),
+    fetchsort: (payload) => dispatch({
+        type: actionTypes.FETCH_SORT,
+        payload
+    })
 });
 
 

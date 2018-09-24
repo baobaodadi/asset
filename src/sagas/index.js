@@ -4,6 +4,7 @@ import back from './back';
 import list from './list';
 import add from './add';
 import edit from './edit';
+import sort from './sort';
 
 
 export default function* () {
@@ -12,5 +13,6 @@ export default function* () {
       spawn(list),
       spawn(add),
       spawn(edit),
+      spawn(sort),
   ];
 }
