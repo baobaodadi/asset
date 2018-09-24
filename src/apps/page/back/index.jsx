@@ -30,6 +30,7 @@ const defaultState = {
     visible: false,
     loading: false,
     appId: undefined,
+    addOrEdit:1,
 
     deviceType: 'NOTEBOOK',
     positionId: [],
@@ -213,7 +214,10 @@ class Back extends Component {
                               assetPictureInner: record.assetPicture,
                               assetStatusInner: record.assetStatus,
                           });
-                          this.setState({visible: true})
+                          this.setState({
+                              assetId:record.assetId,
+                                  visible: true
+                          })
 
                       }
                       }>编辑</a>
@@ -261,6 +265,7 @@ class Back extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                if(this.state.addOrEdit){
                 this.props.fetchadd({
                     positionId: values.positionIdInner,
                     categoryId: values.categoryIdInner,
@@ -288,6 +293,36 @@ class Back extends Component {
                     assetPicture: values.assetPictureInner,
                     assetStatus: values.assetStatusInner,
                 })
+                }else{
+                    this.props.fetchedit({
+                        assetId: this.state.assetId,
+                        positionId: values.positionIdInner,
+                        categoryId: values.categoryIdInner,
+                        assetStock: values.assetStockInner,
+                        assetKeepStock: values.assetKeepStockInner,
+                        brand: values.brandInner,
+                        brandStatus: values.brandStatusInner,
+                        os: values.osInner,
+                        osStatus: values.osStatusInner,
+                        size: values.sizeInner,
+                        sizeStatus: values.sizeStatusInner,
+                        memory: values.memoryInner,
+                        memoryStatus: values.memoryStatusInner,
+                        disk: values.diskInner,
+                        diskStatus: values.diskStatusInner,
+                        cpu: values.cpuInner,
+                        cpuStatus: values.cpuStatusInner,
+                        card: values.cardInner,
+                        cardStatus: values.cardStatusInner,
+                        resolution: values.resolutionInner,
+                        resolutionStatus: values.resolutionStatusInner,
+                        interface: values.interfaceInner,
+                        interfaceStatus: values.interfaceStatusInner,
+                        tempUse: values.tempUseInner,
+                        assetPicture: values.assetPictureInner,
+                        assetStatus: values.assetStatusInner,
+                    })
+                }
             }
         });
 
@@ -317,8 +352,11 @@ class Back extends Component {
     }
 
     handleOk(value) {
+        this.setState({
+            visible: false,
+            addOrEdit: 0,
+        })
         this.handleSubmit();
-        this.setState({visible: false})
     }
 
     getBase64(img, callback) {
@@ -426,8 +464,36 @@ class Back extends Component {
                 </div>
                 <div className="bank">
                     <Button type="primary" onClick={() => {
+                        this.props.form.setFieldsValue({
+                            positionIdInner: undefined,
+                            categoryIdInner: undefined,
+                            assetStockInner: undefined,
+                            assetKeepStockInner: undefined,
+                            brandInner: undefined,
+                            brandStatusInner: undefined,
+                            osInner: undefined,
+                            osStatusInner: undefined,
+                            sizeInner: undefined,
+                            sizeStatusInner: undefined,
+                            memoryInner: undefined,
+                            memoryStatusInner: undefined,
+                            diskInner: undefined,
+                            diskStatusInner: undefined,
+                            cpuInner: undefined,
+                            cpuStatusInner: undefined,
+                            cardInner: undefined,
+                            cardStatusInner: undefined,
+                            resolutionInner: undefined,
+                            resolutionStatusInner: undefined,
+                            interfaceInner: undefined,
+                            interfaceStatusInner: undefined,
+                            tempUseInner: undefined,
+                            assetPictureInner: undefined,
+                            assetStatusInner: undefined,
+                        });
                         this.setState({
                             visible: true,
+                            addOrEdit: 1,
                         });
                     }}>新增</Button>
                 </div>
