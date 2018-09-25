@@ -21,3 +21,6 @@ export const UPDATE_PRE = 'update_pre';
 
 export const FETCH_SORT = 'fetch_sort';
 export const UPDATE_SORT = 'update_sort';
+
+export const FETCH_POSITION = 'fetch_position';
+export const UPDATE_POSITION = 'update_position';

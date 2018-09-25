@@ -2,6 +2,7 @@ import queryString from 'query-string';
 import fetch from 'isomorphic-fetch';
 import formData from 'form-urlencoded';
 
+
 function handleResponse(promise, url, method) {
   return promise
     .then(res => {
@@ -12,16 +13,17 @@ function handleResponse(promise, url, method) {
         return res.json();
       }
     })
-    .then(({ status, data, message, models }) => {
-      if (+status === 0) {
+    .then(({ code, data, message, models }) => {
+      if (+code === 0) {
         if (data != null) {
           return data;
         }
 
         return models;
-      }else {
-        console.log('network error', { status, message, url, method });
-        throw Object({ status, message, url, method });
+      } else if (code) {
+        console.log('network error', { code, message, url, method });
+
+        throw Object({ code, message, url, method });
       }
     });
 }

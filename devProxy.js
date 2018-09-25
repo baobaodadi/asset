@@ -1,11 +1,17 @@
 module.exports = {
     test: {
         '^/assetManager/**': {
-            target: 'http://localhost:3001/',
-            hostRewrite: 'http://localhost:3001/',
+            target: 'http://10.129.204.69:8090/',
+            hostRewrite: 'http://10.129.204.69:8090/',
             changeOrigin: true,
             secure: false,
         },
+        // '^/assetManager/**': {
+        //     target: 'http://localhost:3001/',
+        //     hostRewrite: 'http://localhost:3001/',
+        //     changeOrigin: true,
+        //     secure: false,
+        // },
         '^/pub/**': {
             target: 'http://test.oa.sogou-inc.com/',
             hostRewrite: 'http://test.oa.sogou-inc.com/',

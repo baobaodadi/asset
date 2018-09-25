@@ -6,3 +6,4 @@ export const ENTITY_EDIT = 'entity_edit';
 export const ENTITY_SORT = 'entity_sort';
 export const ENTITY_LOG = 'entity_log';
 export const ENTITY_PRE = 'entity_pre';
+export const ENTITY_POSITION = 'entity_position';

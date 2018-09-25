@@ -428,7 +428,7 @@ class Back extends Component {
         return e && e.fileList;
     }
 
-    searchBar(back) {
+    searchBar(back,position) {
         return (
             <div className="find">
                 <div className="bank">
@@ -439,9 +439,9 @@ class Back extends Component {
                         onChange={this.handleCatagory}
                     >
                         {
-                            back && back.category && back.category.map((item, i) =>
-                                <Select.Option key={i} value={item.id}>
-                                    {item.name}
+                            back && back.map((item, i) =>
+                                <Select.Option key={i} value={item.typeId}>
+                                    {item.typeName}
                                 </Select.Option>
                             )
                         }
@@ -457,18 +457,9 @@ class Back extends Component {
                         allowClear
                         multiple
                         treeDefaultExpandAll
+                        treeData={position}
                         onChange={this.handlePosition}
-                    >
-                        <TreeNode value="parent 1" title="parent 1" key="0-1">
-                            <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-                                <TreeNode value="leaf1" title="my leaf" key="random"/>
-                                <TreeNode value="leaf2" title="your leaf" key="random1"/>
-                            </TreeNode>
-                            <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-                                <TreeNode value="sss" title='sss' key="random3"/>
-                            </TreeNode>
-                        </TreeNode>
-                    </TreeSelect>
+                    />
                 </div>
                 <div className="bank">
                     <Button type="primary" onClick={this.handleSearch}>查询</Button>
@@ -516,12 +507,15 @@ class Back extends Component {
 
     componentDidMount() {
         this.props.fetchback({deviceType: this.state.deviceType});
+        this.props.fetchposition();
     }
 
     render() {
-        const {back, list} = this.props;
+        const {back, list,position} = this.props;
         const {getFieldDecorator} = this.props.form;
         const imageUrl = this.state.assetPictureInner;
+
+        console.log(back)
 
         return (
             <div className="back">
@@ -558,9 +552,9 @@ class Back extends Component {
                                     onChange={this.handleCatagoryInner}
                                 >
                                     {
-                                        back && back.category && back.category.map((item, i) =>
-                                            <Select.Option key={i} value={item.id}>
-                                                {item.name}
+                                        back  && back.map((item, i) =>
+                                            <Select.Option key={i} value={item.typeId}>
+                                                {item.typeName}
                                             </Select.Option>
                                         )
                                     }
@@ -612,7 +606,7 @@ class Back extends Component {
                             {getFieldDecorator('positionIdInner', {
                                 rules: [{required: true}],
                             })(
-                                <TreeSelect
+                                <
                                     showSearch
                                     style={{width: 300}}
                                     // value={this.state.innerPosition}
@@ -622,17 +616,8 @@ class Back extends Component {
                                     multiple
                                     treeDefaultExpandAll
                                     onChange={this.handleInnerPosition}
-                                >
-                                    <TreeNode value="parent 1" title="parent 1" key="0-1" selectable={false}>
-                                        <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-                                            <TreeNode value="leaf1" title="my leaf" key="random"/>
-                                            <TreeNode value="leaf2" title="your leaf" key="random1"/>
-                                        </TreeNode>
-                                        <TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-                                            <TreeNode value="sss" title='sss' key="random3"/>
-                                        </TreeNode>
-                                    </TreeNode>
-                                </TreeSelect>
+                                    treeData={position}
+                                />
                             )}
                         </FormItem>
 
@@ -921,7 +906,7 @@ class Back extends Component {
                 </Modal>
                 <Tabs defaultActiveKey="1" onChange={this.handleTab}>
                     <TabPane tab="笔记本" key="NOTEBOOK">
-                        {this.searchBar(back)}
+                        {this.searchBar(back,position)}
                         {
                             list ?
                                 <Table
@@ -958,6 +943,7 @@ const mapStateToProps = state => {
     return ({
         back: state.back.data,
         list: state.list.data,
+        position: state.position.data,
     })
 };
 
@@ -981,6 +967,10 @@ const mapDispatchToProps = dispatch => ({
     }),
     fetchsort: (payload) => dispatch({
         type: actionTypes.FETCH_SORT,
+        payload
+    }),
+    fetchposition: (payload) => dispatch({
+        type: actionTypes.FETCH_POSITION,
         payload
     })
 });

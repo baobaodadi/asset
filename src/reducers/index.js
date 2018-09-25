@@ -5,6 +5,7 @@ import list from './list';
 import add from './add';
 import edit from './edit';
 import sort from './sort';
+import position from './position';
 
 
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
     list,
     add,
     edit,
+    position,
     sort
 });
