@@ -2,7 +2,12 @@ const menus = [
     {
         'key': 'back',
         'type': "tags",
-        'content': '后台',
+        'content': '资产',
+    },
+    {
+        'key': 'position',
+        'type': "tags",
+        'content': '岗位',
     },
 ];
 

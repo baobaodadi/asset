@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import Back from './back/index.jsx';
+import Position from './position/index.jsx';
 
 import {
   Route,
@@ -17,6 +18,7 @@ class Routes extends Component {
     return (
       <Switch>
         <Route exact path="/back" component={Back}/>
+        <Route exact path="/position" component={Position}/>
         <Redirect from="/" to="back"/>
       </Switch>
     );

@@ -19,7 +19,7 @@ function recursiveTraverse(node) {
 
 
 
-function* fetchposition(action) {
+function* fetchPosition(action) {
   const {payload} = action;
   try {
 
@@ -51,6 +51,6 @@ function* fetchposition(action) {
 
 export default function* () {
   yield [
-    takeLatest(actionTypes.FETCH_POSITION, fetchposition),
+    takeLatest(actionTypes.FETCH_POSITION, fetchPosition),
   ];
 }

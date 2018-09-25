@@ -508,7 +508,7 @@ class Back extends Component {
 
     componentDidMount() {
         this.props.fetchback({deviceType: this.state.deviceType});
-        this.props.fetchposition();
+        this.props.fetchPosition();
     }
 
     render() {
@@ -968,7 +968,7 @@ const mapDispatchToProps = dispatch => ({
         type: actionTypes.FETCH_SORT,
         payload
     }),
-    fetchposition: (payload) => dispatch({
+    fetchPosition: (payload) => dispatch({
         type: actionTypes.FETCH_POSITION,
         payload
     })
