@@ -32,7 +32,7 @@ function* fetchposition(action) {
           item2.title=item2.value
         })
       }
-    })
+    });
 
     yield put({
       type: actionTypes.UPDATE_POSITION,

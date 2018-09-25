@@ -433,6 +433,7 @@ class Back extends Component {
             <div className="find">
                 <div className="bank">
                     <Select
+                        mode="multiple"
                         style={{width: 300}}
                         placeholder="请选择品类"
                         defaultValue={this.state.categoryId}
@@ -514,8 +515,6 @@ class Back extends Component {
         const {back, list,position} = this.props;
         const {getFieldDecorator} = this.props.form;
         const imageUrl = this.state.assetPictureInner;
-
-        console.log(back)
 
         return (
             <div className="back">

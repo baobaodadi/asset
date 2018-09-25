@@ -13,7 +13,6 @@ function* fetchsort(action) {
   try {
 
     const data=yield service.get(API[ENTITY_SORT],{...payload});
-      console.log(data)
 
   }
   catch (e) {
