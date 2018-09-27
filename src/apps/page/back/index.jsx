@@ -19,7 +19,8 @@ import {
     Tabs,
     Form,
     TreeSelect,
-    Divider
+    Divider,
+    InputNumber
 } from 'antd';
 
 const TabPane = Tabs.TabPane;
@@ -626,7 +627,7 @@ class Back extends Component {
                             {getFieldDecorator('assetKeepStockInner', {
                                 rules: [{required: true, message: ''}],
                             })(
-                                <Input/>
+                                <InputNumber />
                             )}
                         </FormItem>
 
