@@ -13,9 +13,7 @@ function* fetchedit(action) {
   try {
 
     const data=yield service.get(API[ENTITY_EDIT],{
-      deviceType:payload.deviceType,
-      suiteId:payload.suiteId,
-      categoryId:payload.categoryId
+      ...payload
     });
 
     yield put({

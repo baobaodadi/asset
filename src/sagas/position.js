@@ -7,16 +7,6 @@ import API from '../config/api';
 import * as actionTypes from '../config/actionTypes';
 import {ENTITY_POSITION} from '../config/constants';
 
-function recursiveTraverse(node) {
-  // if (!node || !node.children) { return; }
-  // node.title=node.value;
-  // node.children.forEach(function(item) {
-  //   recursiveTraverse(item);
-  // });
-}
-
-
-
 
 
 function* fetchPosition(action) {
@@ -29,10 +19,11 @@ function* fetchPosition(action) {
       item1.title=item1.value;
       if(item1.children){
         item1.children.map((item2,i)=>{
-          item2.title=item2.value
+          item2.title=item2.value;
         })
       }
     });
+
 
     yield put({
       type: actionTypes.UPDATE_POSITION,
