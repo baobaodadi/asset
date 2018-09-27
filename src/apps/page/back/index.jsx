@@ -33,11 +33,11 @@ const defaultState = {
     addOrEdit:1,
 
     deviceType: 'NOTEBOOK',
-    positionId: [],
+    suiteId: [],
     categoryId: [],
 
     //MODAL STATE
-    positionIdInner: [],
+    suiteIdInner: [],
     categoryIdInner: undefined,
     assetStockInner: 0,
     assetKeepStockInner: 0,
@@ -55,13 +55,14 @@ const defaultState = {
     cpuStatusInner: 1,
     cardInner: undefined,
     cardStatusInner: 1,
-    resolutionInner: undefined,
-    resolutionStatusInner: 1,
+    adapterInner: undefined,
+    adapterStatusInner: 1,
     interfaceInner: undefined,
     interfaceStatusInner: 1,
     tempUseInner: 0,
     assetPictureInner: '',
-    assetStatusInner: 1
+    assetStatusInner: 1,
+    recommendInner:0
 
 };
 
@@ -108,18 +109,21 @@ class Back extends Component {
                 dataIndex: 'assetStock',
                 key: 'assetStock',
                 width: 170,
-                render: row => row || '--',
+
             },
             {
                 title: '保留库存',
                 dataIndex: 'assetKeepStock',
                 key: 'assetKeepStock',
                 width: 170,
+                render: (text, record) => (
+                  record.assetStock<text?'补货中':text
+                )
             },
             {
                 title: '岗位序列',
-                dataIndex: 'positionId',
-                key: 'positionId',
+                dataIndex: 'suiteId',
+                key: 'suiteId',
                 width: 100,
             },
             {
@@ -165,8 +169,8 @@ class Back extends Component {
                 width: 100,
             }, {
                 title: '分辨率',
-                dataIndex: 'resolution',
-                key: 'resolution',
+                dataIndex: 'adapter',
+                key: 'adapter',
                 width: 100,
             }, {
                 title: '接口',
@@ -189,7 +193,7 @@ class Back extends Component {
                       <a
                           onClick={() => {
                           this.props.form.setFieldsValue({
-                              positionIdInner: record.positionId,
+                              suiteIdInner: record.suiteId,
                               categoryIdInner: record.categoryId,
                               assetStockInner: record.assetStock,
                               assetKeepStockInner: record.assetKeepStock,
@@ -207,8 +211,8 @@ class Back extends Component {
                               cpuStatusInner: record.cpuStatus,
                               cardInner: record.card,
                               cardStatusInner: record.cardStatus,
-                              resolutionInner: record.resolution,
-                              resolutionStatusInner: record.resolutionStatus,
+                              adapterInner: record.adapter,
+                              adapterStatusInner: record.adapterStatus,
                               interfaceInner: record.interface,
                               interfaceStatusInner: record.interfaceStatus,
                               tempUseInner: record.tempUse,
@@ -253,6 +257,7 @@ class Back extends Component {
         this.handleUploadChange = this.handleUploadChange.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleOk = this.handleOk.bind(this);
+        this.tableList = this.tableList.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.handleNew = this.handleNew.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
@@ -278,7 +283,7 @@ class Back extends Component {
                 console.log('Received values of form: ', values);
                 if(this.state.addOrEdit){
                 this.props.fetchadd({
-                    positionId: values.positionIdInner,
+                    suiteId: values.suiteIdInner,
                     categoryId: values.categoryIdInner,
                     assetStock: values.assetStockInner,
                     assetKeepStock: values.assetKeepStockInner,
@@ -296,18 +301,19 @@ class Back extends Component {
                     cpuStatus: values.cpuStatusInner,
                     card: values.cardInner,
                     cardStatus: values.cardStatusInner,
-                    resolution: values.resolutionInner,
-                    resolutionStatus: values.resolutionStatusInner,
+                    adapter: values.adapterInner,
+                    adapterStatus: values.adapterStatusInner,
                     interface: values.interfaceInner,
                     interfaceStatus: values.interfaceStatusInner,
                     tempUse: values.tempUseInner,
                     assetPicture: values.assetPictureInner,
                     assetStatus: values.assetStatusInner,
+                    recommend: values.recommendInner,
                 })
                 }else{
                     this.props.fetchedit({
                         assetId: this.state.assetId,
-                        positionId: values.positionIdInner,
+                        suiteId: values.suiteIdInner,
                         categoryId: values.categoryIdInner,
                         assetStock: values.assetStockInner,
                         assetKeepStock: values.assetKeepStockInner,
@@ -325,13 +331,14 @@ class Back extends Component {
                         cpuStatus: values.cpuStatusInner,
                         card: values.cardInner,
                         cardStatus: values.cardStatusInner,
-                        resolution: values.resolutionInner,
-                        resolutionStatus: values.resolutionStatusInner,
+                        adapter: values.adapterInner,
+                        adapterStatus: values.adapterStatusInner,
                         interface: values.interfaceInner,
                         interfaceStatus: values.interfaceStatusInner,
                         tempUse: values.tempUseInner,
                         assetPicture: values.assetPictureInner,
                         assetStatus: values.assetStatusInner,
+                        recommend: values.recommendInner,
                     })
                 }
             }
@@ -355,7 +362,9 @@ class Back extends Component {
     }
 
     handleTab(value) {
+        console.log(value)
         this.setState({deviceType: value});
+        this.props.fetchback({deviceType: value});
     }
 
     handleCancel(value) {
@@ -385,7 +394,7 @@ class Back extends Component {
         console.log(this.state.categoryId);
         this.props.fetchlist({
             deviceType: this.state.deviceType,
-            positionId: this.state.positionId.toString(),
+            suiteId: this.state.suiteId.toString(),
             categoryId: this.state.categoryId.toString(),
         });
     }
@@ -397,7 +406,7 @@ class Back extends Component {
 
     handlePosition(value) {
         console.log(value);
-        this.setState({positionId: value});
+        this.setState({suiteId: value});
     }
 
     handleInnerPosition(value) {
@@ -428,6 +437,30 @@ class Back extends Component {
         return e && e.fileList;
     }
 
+    tableList(list) {
+        console.log(list)
+      return (
+        <div className="tablelist">
+      {
+        list?
+          <Table
+            dataSource={list}
+            columns={this.columns()}
+            scroll={{y: 640}}
+            onChange={this.handleTableChange}
+            locale={{emptyText: '暂无数据'}}
+          /> :
+          <Table
+            dataSource={list}
+            columns={this.columns()}
+            scroll={{y: 640}}
+            locale={{emptyText: '暂无数据'}}
+          />
+      }
+        </div>
+      )
+    }
+
     searchBar(back,position) {
         return (
             <div className="find">
@@ -452,7 +485,7 @@ class Back extends Component {
                     <TreeSelect
                         showSearch
                         style={{width: 300}}
-                        value={this.state.positionId}
+                        value={this.state.suiteId}
                         dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                         placeholder="请选择岗位"
                         allowClear
@@ -468,7 +501,7 @@ class Back extends Component {
                 <div className="bank">
                     <Button type="primary" onClick={() => {
                         this.props.form.setFieldsValue({
-                            positionIdInner: undefined,
+                            suiteIdInner: undefined,
                             categoryIdInner: undefined,
                             assetStockInner: undefined,
                             assetKeepStockInner: undefined,
@@ -486,8 +519,8 @@ class Back extends Component {
                             cpuStatusInner: undefined,
                             cardInner: undefined,
                             cardStatusInner: undefined,
-                            resolutionInner: undefined,
-                            resolutionStatusInner: undefined,
+                            adapterInner: undefined,
+                            adapterStatusInner: undefined,
                             interfaceInner: undefined,
                             interfaceStatusInner: undefined,
                             tempUseInner: undefined,
@@ -602,7 +635,7 @@ class Back extends Component {
                             labelCol={{span: 5}}
                             wrapperCol={{span: 12}}
                         >
-                            {getFieldDecorator('positionIdInner', {
+                            {getFieldDecorator('suiteIdInner', {
                                 rules: [{required: true}],
                             })(
                                 <
@@ -812,7 +845,7 @@ class Back extends Component {
                                     wrapperCol={{span: 18}}
                                     style={{'display': 'inline-block', 'marginLeft': '80px'}}
                                 >
-                                    {getFieldDecorator('resolutionInner', {
+                                    {getFieldDecorator('adapterInner', {
                                         rules: [{required: true, message: ''}],
                                     })(
                                         <Input/>
@@ -824,7 +857,7 @@ class Back extends Component {
                                     wrapperCol={{span: 5}}
                                     style={{'display': 'inline-block', 'marginLeft': '60px'}}
                                 >
-                                    {getFieldDecorator('resolutionStatusInner', {
+                                    {getFieldDecorator('adapterStatusInner', {
                                         valuePropName: 'checked'
                                     })(
                                         <Switch checkedChildren="开" unCheckedChildren="关"/>,
@@ -906,31 +939,19 @@ class Back extends Component {
                 <Tabs defaultActiveKey="1" onChange={this.handleTab}>
                     <TabPane tab="笔记本" key="NOTEBOOK">
                         {this.searchBar(back,position)}
-                        {
-                            list ?
-                                <Table
-                                    dataSource={list.list}
-                                    columns={this.columns()}
-                                    scroll={{y: 640}}
-                                    onChange={this.handleTableChange}
-                                    locale={{emptyText: '暂无数据'}}
-                                /> :
-                                <Table
-                                    dataSource={list.list}
-                                    columns={this.columns()}
-                                    scroll={{y: 640}}
-                                    locale={{emptyText: '暂无数据'}}
-                                />
-                        }
+                        {this.tableList(list)}
                     </TabPane>
                     <TabPane tab="显示器" key="MONITOR">
-                        {this.searchBar(back)}
+                      {this.searchBar(back,position)}
+                      {this.tableList(list)}
                     </TabPane>
                     <TabPane tab="主机" key="HOST">
-                        {this.searchBar(back)}
+                      {this.searchBar(back,position)}
+                      {this.tableList(list)}
                     </TabPane>
                     <TabPane tab="一体机" key="UIONMAC">
-                        {this.searchBar(back)}
+                      {this.searchBar(back,position)}
+                      {this.tableList(list)}
                     </TabPane>
                 </Tabs>
             </div>

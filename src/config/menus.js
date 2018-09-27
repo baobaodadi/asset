@@ -4,11 +4,11 @@ const menus = [
         'type': "tags",
         'content': '资产',
     },
-    {
-        'key': 'position',
-        'type': "tags",
-        'content': '岗位',
-    },
+    // {
+    //     'key': 'position',
+    //     'type': "tags",
+    //     'content': '岗位',
+    // },
 ];
 
 export default menus

@@ -21,14 +21,18 @@ import {
   Select,
   Tabs,
   Form,
-  TreeSelect
+  TreeSelect,
 } from 'antd';
 import 'moment/locale/zh-cn'
 
 
 const defaultState = {
-  positionId:undefined
+  suiteId:undefined,
+  select: '1'
 };
+
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 
 class Position extends Component {
 
@@ -50,7 +54,7 @@ class Position extends Component {
 
   handlePosition(value) {
     console.log(value);
-    this.setState({positionId: value});
+    this.setState({suiteId: value});
   }
 
 
@@ -69,7 +73,7 @@ class Position extends Component {
               <TreeSelect
                 showSearch
                 style={{width: 600}}
-                value={this.state.positionId}
+                value={this.state.suiteId}
                 dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                 placeholder="请选择岗位"
                 allowClear
@@ -85,6 +89,8 @@ class Position extends Component {
                   visible: true,
                 });
               }}>新增</Button>
+
+              <RadioButton >选择</RadioButton>
             </div>
           </div>
       </div>

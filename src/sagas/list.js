@@ -12,9 +12,10 @@ function* fetchlist(action) {
   const {payload} = action;
   try {
 
+
     const data=yield service.get(API[ENTITY_LIST],{
       deviceType:payload.deviceType,
-      positionId:payload.positionId,
+      suiteId:payload.suiteId,
       categoryId:payload.categoryId
     });
 
