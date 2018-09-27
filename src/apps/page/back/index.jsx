@@ -938,7 +938,7 @@ class Back extends Component {
                   listType="picture-card"
                   className="avatar-uploader"
                   showUploadList={false}
-                  action="//jsonplaceholder.typicode.com/posts/"
+                  action="/oss/upload/imgUseDwarf/"
                   onChange={this.handleUploadChange}
                 >
                   {imageUrl ?
