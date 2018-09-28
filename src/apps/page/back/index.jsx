@@ -59,10 +59,10 @@ const defaultState = {
   cardStatusInner: 1,
   adapterInner: undefined,
   adapterStatusInner: 1,
-  interfaceInner: undefined,
-  interfaceStatusInner: 1,
+  resolutionInner: undefined,
+  resolutionStatusInner: 1,
   tempUseInner: 0,
-  assetPictureInner: '',
+  assetPictureInner: undefined,
   assetStatusInner: 1,
   recommendInner: 0
 
@@ -83,7 +83,7 @@ class Back extends Component {
         title: '设备类型',
         dataIndex: 'deviceType',
         key: 'deviceType',
-        width: 150,
+        width: 100,
       },
       {
         title: '设备图片',
@@ -179,8 +179,8 @@ class Back extends Component {
         width: 100,
       }, {
         title: '接口',
-        dataIndex: 'interface',
-        key: 'interface',
+        dataIndex: 'resolution',
+        key: 'resolution',
         width: 100,
       },
       {
@@ -188,6 +188,9 @@ class Back extends Component {
         dataIndex: 'tempUse',
         key: 'tempUse',
         width: 100,
+        render: (text) => (
+          text ? '是' : '否'
+        )
       },
       {
         title: '操作',
@@ -197,6 +200,12 @@ class Back extends Component {
           <span>
                       <a
                         onClick={() => {
+                          this.setState({
+                            assetPictureInner: record.assetPicture,
+                            assetId: record.assetId,
+                            visible: true,
+                            addOrEdit: 0,
+                          })
                           this.props.form.setFieldsValue({
                             suiteIdInner: findname(this.props.position,record.suiteId),
                             categoryIdInner: record.categoryId,
@@ -218,35 +227,32 @@ class Back extends Component {
                             cardStatusInner: record.cardStatus,
                             adapterInner: record.adapter,
                             adapterStatusInner: record.adapterStatus,
-                            interfaceInner: record.interface,
-                            interfaceStatusInner: record.interfaceStatus,
+                            resolutionInner: record.resolution,
+                            resolutionStatusInner: record.resolutionStatus,
                             tempUseInner: +record.tempUse,
-                            assetPictureInner: record.assetPicture,
-                            assetStatusInner: record.assetStatus,
+                            // assetStatusInner: record.assetStatus,
                           });
-                          this.setState({
-                            assetId: record.assetId,
-                            visible: true,
-                            addOrEdit: 0,
-                          })
                         }}
                       >编辑</a>
                       <Divider type="vertical"/>
                       <a
                         onClick={() => {
                           this.props.fetchsort({assetId: record.assetId, recommend: 1})
+                          this.delayfresh();
                         }}
                       >推荐</a>
                         <Divider type="vertical"/>
                       <a
                         onClick={() => {
                           this.props.fetchsort({assetId: record.assetId, move: -1})
+                          this.delayfresh();
                         }}
                       >置上</a>
                         <Divider type="vertical"/>
                       <a
                         onClick={() => {
                           this.props.fetchsort({assetId: record.assetId, move: 1})
+                          this.delayfresh();
                         }}
                       >置下</a>
                     </span>
@@ -260,6 +266,7 @@ class Back extends Component {
     super(props);
     this.state = {...defaultState};
     this.handleTab = this.handleTab.bind(this);
+    this.delayfresh = this.delayfresh.bind(this);
     this.normFile = this.normFile.bind(this);
     this.handleUploadChange = this.handleUploadChange.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
@@ -297,26 +304,26 @@ class Back extends Component {
             assetStock: values.assetStockInner,
             assetKeepStock: values.assetKeepStockInner,
             brand: values.brandInner,
-            brandStatus: values.brandStatusInner,
+            brandStatus: +values.brandStatusInner,
             os: values.osInner,
-            osStatus: values.osStatusInner,
+            osStatus: +values.osStatusInner,
             size: values.sizeInner,
-            sizeStatus: values.sizeStatusInner,
+            sizeStatus: +values.sizeStatusInner,
             memory: values.memoryInner,
-            memoryStatus: values.memoryStatusInner,
+            memoryStatus: +values.memoryStatusInner,
             disk: values.diskInner,
-            diskStatus: values.diskStatusInner,
+            diskStatus: +values.diskStatusInner,
             cpu: values.cpuInner,
-            cpuStatus: values.cpuStatusInner,
+            cpuStatus: +values.cpuStatusInner,
             card: values.cardInner,
-            cardStatus: values.cardStatusInner,
+            cardStatus: +values.cardStatusInner,
             adapter: values.adapterInner,
-            adapterStatus: values.adapterStatusInner,
-            interface: values.interfaceInner,
-            interfaceStatus: values.interfaceStatusInner,
+            adapterStatus: +values.adapterStatusInner,
+            resolution: values.resolutionInner,
+            resolutionStatus: +values.resolutionStatusInner,
             tempUse: +values.tempUseInner,
             assetPicture: this.state.assetPictureInner,
-            assetStatus: values.assetStatusInner,
+            // assetStatus: +values.assetStatusInner,
             recommend: values.recommendInner,
           })
         } else {
@@ -328,26 +335,26 @@ class Back extends Component {
             assetStock: values.assetStockInner,
             assetKeepStock: values.assetKeepStockInner,
             brand: values.brandInner,
-            brandStatus: values.brandStatusInner,
+            brandStatus: +values.brandStatusInner,
             os: values.osInner,
-            osStatus: values.osStatusInner,
+            osStatus: +values.osStatusInner,
             size: values.sizeInner,
-            sizeStatus: values.sizeStatusInner,
+            sizeStatus: +values.sizeStatusInner,
             memory: values.memoryInner,
-            memoryStatus: values.memoryStatusInner,
+            memoryStatus: +values.memoryStatusInner,
             disk: values.diskInner,
-            diskStatus: values.diskStatusInner,
+            diskStatus: +values.diskStatusInner,
             cpu: values.cpuInner,
-            cpuStatus: values.cpuStatusInner,
+            cpuStatus: +values.cpuStatusInner,
             card: values.cardInner,
-            cardStatus: values.cardStatusInner,
+            cardStatus: +values.cardStatusInner,
             adapter: values.adapterInner,
-            adapterStatus: values.adapterStatusInner,
-            interface: values.interfaceInner,
-            interfaceStatus: values.interfaceStatusInner,
+            adapterStatus: +values.adapterStatusInner,
+            resolution: values.resolutionInner,
+            resolutionStatus: +values.resolutionStatusInner,
             tempUse: +values.tempUseInner,
             assetPicture: this.state.assetPictureInner,
-            assetStatus: values.assetStatusInner,
+            // assetStatus: +values.assetStatusInner,
             recommend: values.recommendInner,
           })
         }
@@ -364,7 +371,7 @@ class Back extends Component {
   }
 
   handleCatagoryInner(value) {
-    console.log(value);
+    // console.log(value);
     // this.props.form.setFieldsValue({
     //     id: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
     //     less: `${value === 'male' ? '1' : '2'}`,
@@ -385,12 +392,18 @@ class Back extends Component {
     this.setState({visible: false})
   }
 
+  delayfresh(){
+    setTimeout(()=>{
+      this.handleSearch();
+    },500)
+  }
+
   handleOk(value) {
     this.setState({
       visible: false,
       addOrEdit: 0,
-    })
-    this.handleSubmit();
+    });
+    this.delayfresh();
   }
 
   getBase64(img, callback) {
@@ -401,11 +414,11 @@ class Back extends Component {
 
 
   handleNew(value) {
-    console.log(value);
+    // console.log(value);
   }
 
   handleSearch() {
-    console.log(this.state.categoryId);
+    // console.log(this.state.categoryId);
     this.props.fetchlist({
       deviceType: this.state.deviceType,
       suiteId: this.state.suiteId.toString(),
@@ -414,7 +427,10 @@ class Back extends Component {
   }
 
   handleTableChange(value) {
-    console.log(value);
+    this.setState({
+      categoryId: [],
+      suiteId:[]
+    });
   }
 
 
@@ -466,6 +482,7 @@ class Back extends Component {
         {
           list ?
             <Table
+              align='center'
               dataSource={list}
               columns={this.columns()}
               scroll={{y: 640}}
@@ -473,6 +490,7 @@ class Back extends Component {
               locale={{emptyText: '暂无数据'}}
             /> :
             <Table
+              align='center'
               dataSource={list}
               columns={this.columns()}
               scroll={{y: 640}}
@@ -528,26 +546,26 @@ class Back extends Component {
               assetStockInner: undefined,
               assetKeepStockInner: undefined,
               brandInner: undefined,
-              brandStatusInner: undefined,
+              brandStatusInner: 1,
               osInner: undefined,
-              osStatusInner: undefined,
+              osStatusInner: 1,
               sizeInner: undefined,
-              sizeStatusInner: undefined,
+              sizeStatusInner: 1,
               memoryInner: undefined,
-              memoryStatusInner: undefined,
+              memoryStatusInner: 1,
               diskInner: undefined,
-              diskStatusInner: undefined,
+              diskStatusInner: 1,
               cpuInner: undefined,
-              cpuStatusInner: undefined,
+              cpuStatusInner: 1,
               cardInner: undefined,
-              cardStatusInner: undefined,
+              cardStatusInner: 1,
               adapterInner: undefined,
-              adapterStatusInner: undefined,
-              interfaceInner: undefined,
-              interfaceStatusInner: undefined,
+              adapterStatusInner: 1,
+              resolutionInner: undefined,
+              resolutionStatusInner: 1,
               tempUseInner: 0,
               assetPictureInner: undefined,
-              assetStatusInner: undefined,
+              // assetStatusInner: 1,
             });
             this.setState({
               visible: true,
@@ -572,9 +590,10 @@ class Back extends Component {
   }
 
   render() {
-    const {back, position,list} = this.props;
+    const {back, position} = this.props;
+    const {list} = this.state;
     const {getFieldDecorator} = this.props.form;
-    const imageUrl = this.state.assetPictureInner;
+    // const imageUrl = this.state.assetPictureInner;
 
     return (
       <div className="back">
@@ -609,6 +628,7 @@ class Back extends Component {
                   style={{width: 300}}
                   placeholder="请选择品类"
                   onChange={this.handleCatagoryInner}
+                  disabled={!this.state.addOrEdit}
                 >
                   {
                     back && back.map((item, i) =>
@@ -626,23 +646,23 @@ class Back extends Component {
             {/*labelCol={{span: 5}}*/}
             {/*wrapperCol={{span: 12}}*/}
             {/*>*/}
-            {/*{getFieldDecorator('id', {*/}
+            {/*{getFieldDecorator('categoryIdInner', {*/}
             {/*//rules: [{required: true, message: ''}],*/}
             {/*})(*/}
-            {/*<Input disabled/>*/}
+            {/*<Input disabled={!this.state.addOrEdit} />*/}
             {/*)}*/}
             {/*</FormItem>*/}
 
             {/*<FormItem*/}
-            {/*label="库存量"*/}
-            {/*labelCol={{span: 5}}*/}
-            {/*wrapperCol={{span: 12}}*/}
+              {/*label="库存量"*/}
+              {/*labelCol={{span: 5}}*/}
+              {/*wrapperCol={{span: 12}}*/}
             {/*>*/}
-            {/*{getFieldDecorator('less', {*/}
-            {/*//rules: [{required: true, message: ''}],*/}
-            {/*})(*/}
-            {/*<Input disabled/>*/}
-            {/*)}*/}
+              {/*{getFieldDecorator('assetStockInner', {*/}
+                {/*//rules: [{required: true, message: ''}],*/}
+              {/*})(*/}
+                {/*<InputNumber disabled/>*/}
+              {/*)}*/}
             {/*</FormItem>*/}
 
             <FormItem
@@ -872,7 +892,7 @@ class Back extends Component {
                   wrapperCol={{span: 18}}
                   style={{'display': 'inline-block', 'marginLeft': '80px'}}
                 >
-                  {getFieldDecorator('adapterInner', {
+                  {getFieldDecorator('resolutionInner', {
                     //rules: [{required: true, message: ''}],
                   })(
                     <Input/>
@@ -884,7 +904,7 @@ class Back extends Component {
                   wrapperCol={{span: 5}}
                   style={{'display': 'inline-block', 'marginLeft': '60px'}}
                 >
-                  {getFieldDecorator('adapterStatusInner', {
+                  {getFieldDecorator('resolutionStatusInner', {
                     valuePropName: 'checked'
                   })(
                     <Switch checkedChildren="开" unCheckedChildren="关"/>,
@@ -898,7 +918,7 @@ class Back extends Component {
                   wrapperCol={{span: 18}}
                   style={{'display': 'inline-block', 'marginLeft': '80px'}}
                 >
-                  {getFieldDecorator('interfaceInner', {
+                  {getFieldDecorator('adapterInner', {
                     //rules: [{required: true, message: ''}],
                   })(
                     <Input/>
@@ -910,7 +930,7 @@ class Back extends Component {
                   wrapperCol={{span: 5}}
                   style={{'display': 'inline-block', 'marginLeft': '60px'}}
                 >
-                  {getFieldDecorator('interfaceStatusInner', {
+                  {getFieldDecorator('adapterStatusInner', {
                     valuePropName: 'checked'
                   })(
                     <Switch checkedChildren="开" unCheckedChildren="关"/>,
@@ -950,8 +970,8 @@ class Back extends Component {
                   action="/oss/upload/imgUseDwarf/"
                   onChange={this.handleUploadChange}
                 >
-                  {imageUrl ?
-                    <img src={imageUrl} alt="avatar"/> :
+                  {this.state.assetPictureInner ?
+                    <img src={this.state.assetPictureInner} alt="avatar"/> :
                     <div>
                       <Icon type={this.state.loading ? 'loading' : 'plus'}/>
                       <div className="ant-upload-text">Upload</div>
@@ -963,7 +983,7 @@ class Back extends Component {
 
           </Form>
         </Modal>
-        <Tabs defaultActiveKey="1" onChange={this.handleTab}>
+        <Tabs defaultActiveKey="NOTEBOOK" onChange={this.handleTab}>
           <TabPane tab="笔记本" key="NOTEBOOK">
             {this.searchBar(back, position)}
             {this.tableList(list)}
@@ -972,7 +992,7 @@ class Back extends Component {
             {this.searchBar(back, position)}
             {this.tableList(list)}
           </TabPane>
-          <TabPane tab="主机" key="HOST">
+          <TabPane tab="台式机" key="HOST">
             {this.searchBar(back, position)}
             {this.tableList(list)}
           </TabPane>
