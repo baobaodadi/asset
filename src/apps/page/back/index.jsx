@@ -379,7 +379,11 @@ class Back extends Component {
   }
 
   handleTab(value) {
-    this.setState({deviceType: value});
+    this.setState({
+      deviceType: value,
+      categoryId: [],
+      suiteId:[]
+    });
     this.props.fetchback({deviceType: value});
     this.props.fetchlist({
       deviceType: value,
@@ -402,7 +406,9 @@ class Back extends Component {
     this.setState({
       visible: false,
       addOrEdit: 0,
+      assetPictureInner: undefined,
     });
+    this.handleSubmit();
     this.delayfresh();
   }
 
@@ -421,16 +427,13 @@ class Back extends Component {
     // console.log(this.state.categoryId);
     this.props.fetchlist({
       deviceType: this.state.deviceType,
-      suiteId: this.state.suiteId.toString(),
+      suiteId: findkey(this.props.position,this.state.suiteId),
       categoryId: this.state.categoryId.toString(),
     });
   }
 
   handleTableChange(value) {
-    this.setState({
-      categoryId: [],
-      suiteId:[]
-    });
+
   }
 
 
