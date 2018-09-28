@@ -81,8 +81,8 @@ class Back extends Component {
     let array = [
       {
         title: '设备类型',
-        dataIndex: 'assetId',
-        key: 'assetId',
+        dataIndex: 'deviceType',
+        key: 'deviceType',
         width: 150,
       },
       {
@@ -315,7 +315,7 @@ class Back extends Component {
             interface: values.interfaceInner,
             interfaceStatus: values.interfaceStatusInner,
             tempUse: +values.tempUseInner,
-            assetPicture: values.assetPictureInner,
+            assetPicture: this.state.assetPictureInner,
             assetStatus: values.assetStatusInner,
             recommend: values.recommendInner,
           })
@@ -346,7 +346,7 @@ class Back extends Component {
             interface: values.interfaceInner,
             interfaceStatus: values.interfaceStatusInner,
             tempUse: +values.tempUseInner,
-            assetPicture: values.assetPictureInner,
+            assetPicture: this.state.assetPictureInner,
             assetStatus: values.assetStatusInner,
             recommend: values.recommendInner,
           })
@@ -436,10 +436,19 @@ class Back extends Component {
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => this.setState({
-        assetPictureInner: imageUrl,
+      this.setState({
+        assetPictureInner: info.fileList[0].response.data[0].url,
         loading: false,
-      }));
+      })
+      // getBase64(info.file.originFileObj, imageUrl => {
+      //   {
+      //     console.log(imageUrl)
+      //     this.setState({
+      //       assetPictureInner: imageUrl,
+      //       loading: false,
+      //     })
+      //   }
+      // });
     }
   }
 
@@ -934,7 +943,7 @@ class Back extends Component {
                 getValueFromEvent: this.normFile,
               })(
                 <Upload
-                  name="avatar"
+                  name="file"
                   listType="picture-card"
                   className="avatar-uploader"
                   showUploadList={false}
