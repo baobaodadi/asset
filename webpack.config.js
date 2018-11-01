@@ -12,7 +12,7 @@ const autoprefixer = require('autoprefixer');
 // const pxtorem = require('postcss-pxtorem');
 // const postcssflexibility = require('postcss-flexibility');
 
-const buildPath = 'live';
+const buildPath = 'build';
 
 const postcssOpts = {
   ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
@@ -136,7 +136,7 @@ module.exports = function (env) {
     config = merge(config, {
       devtool: '#eval-source-map',
       devServer: {
-        port: 7777,
+        port: 7778,
         https:false,
         historyApiFallback: true,
         disableHostCheck: true,
